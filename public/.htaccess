@@ -1,0 +1,24 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    ## Permanent redirect examples
+    #redirectMatch 301 /de/test https://www.somedomain.com/de/test
+    #redirectMatch 301 ^/fr/test2$ https://www.somedomain.com/de/test2
+
+    #RewriteCond %{HTTP:Accept-Language} ^de [NC]
+    #RewriteRule ^$ /de [L,R=301]
+    #RewriteCond %{HTTP:Accept-Language} ^fr [NC]
+    #RewriteRule ^$ /fr [L,R=301]
+
+    ## https redirect non-www to www
+    #RewriteCond %{HTTP_HOST} !^www\.
+    #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+    ## redirect http to https
+    #RewriteCond %{HTTPS} off
+    #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+    #RewriteBase /newmbt/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME}/index.html !-f
+    RewriteCond %{REQUEST_FILENAME}/index.php !-f
+    RewriteRule . index.php [L]
+</IfModule>
