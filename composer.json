@@ -11,5 +11,7 @@
             "email": "sven.otziger@payrexx.com"
         }
     ],
-    "require": {}
+    "require": {
+        "filp/whoops": "^2.14"
+    }
 }
