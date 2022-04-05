@@ -2,7 +2,8 @@
     "name": "sven/demo",
     "autoload": {
         "psr-4": {
-            "Sven\\Demo\\": "src/"
+            "Sven\\Demo\\": "src/",
+            "App\\": "src/App"
         }
     },
     "authors": [
