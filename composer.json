@@ -1,0 +1,15 @@
+{
+    "name": "sven/demo",
+    "autoload": {
+        "psr-4": {
+            "Sven\\Demo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sven Otziger",
+            "email": "sven.otziger@payrexx.com"
+        }
+    ],
+    "require": {}
+}
