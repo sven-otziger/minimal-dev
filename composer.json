@@ -4,7 +4,8 @@
         "psr-4": {
             "Sven\\Demo\\": "src/",
             "App\\": "src/App",
-            "Test\\": "src/App/Test"
+            "Test\\": "src/App/Test",
+            "Controller\\": "src/App/Controller"
         }
     },
     "authors": [

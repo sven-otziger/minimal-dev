@@ -7,6 +7,6 @@ class DemoController
 {
 	public function index()
 	{
-		die("Hello World");
+		die("This is text from the index controller.");
 	}
 }
