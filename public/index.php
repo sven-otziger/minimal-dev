@@ -19,3 +19,6 @@ try {
 
 $indexController = new \App\IndexController();
 $indexController->index();
+
+$myBoat = new \Test\Boat();
+$myBoat->index();
