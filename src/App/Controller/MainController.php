@@ -2,9 +2,6 @@
 
 namespace Controller;
 
-use App\IndexController;
-use Sven\Demo\DemoController;
-
 class MainController
 {
 	public function route($url)
@@ -14,18 +11,18 @@ class MainController
 		$url = str_replace("/", "", $url);
 		switch ($url) {
 			case 'index':
-				$test = new IndexController();
-				$test->index();
+				$index = new IndexController();
+				$index->route();
 				break;
 			case 'demo':
 				$demo = new DemoController();
-				$demo->index();
+				$demo->route();
 				break;
 			case 'harambe':
-				header("Location: https://cdn.prod.www.spiegel.de/images/8c84f10c-0001-0004-0000-000001001234_w920_r1.0666666666666667_fpx46.88_fpy50.jpg");
+				header("Location: https://bit.ly/3KiFSE9");
 				break;
 			default:
-				require __DIR__ . '/../../html/404.php';
+				require __DIR__ . '/../html/404.html';
 		}
 
 	}
