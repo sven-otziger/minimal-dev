@@ -4,10 +4,12 @@ namespace Retro\Inheritance;
 
 abstract class MotorVehicle
 {
-	protected string $owner;
-	protected string $brand;
-	protected string $model;
-	protected int $yearOfManufacture;
+	use ShowOffMotorVehicle;
+
+	public string $owner;
+	public string $brand;
+	public string $model;
+	public int $yearOfManufacture;
 
 	public function __construct($owner, $brand, $model, $yearOfManufacture)
 	{

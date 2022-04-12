@@ -5,7 +5,9 @@ $car = new \Retro\Inheritance\Car("Olaf Berg", "Volvo", "XC60", 2013);
 $car->accelerate()
 	->refuel()
 	->brake()
-	->park();
+	->park()
+	->showOffDetails()
+	->showOffMotor();
 
 echo '<br><br>';
 
@@ -13,4 +15,6 @@ $motorcycle = new \Retro\Inheritance\Motorcycle("Sam Martensen", "Yamaha", "MT07
 $motorcycle->accelerate()
 			->refuel()
 			->brake()
-			->park();
+			->park()
+			->showOffDetails()
+			->showOffMotor();

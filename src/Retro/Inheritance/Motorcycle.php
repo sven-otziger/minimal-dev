@@ -4,6 +4,8 @@ namespace Retro\Inheritance;
 
 class Motorcycle extends MotorVehicle implements DriveMotorVehicleInterface
 {
+	use ShowOffMotorVehicle;
+
 	public function __construct($owner, $brand, $model, $yearOfManufacture)
 	{
 		parent::__construct($owner, $brand, $model, $yearOfManufacture);
