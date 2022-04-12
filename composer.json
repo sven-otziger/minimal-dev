@@ -5,7 +5,8 @@
             "Sven\\Demo\\": "src/",
             "App\\": "src/App",
             "Test\\": "src/App/Test",
-            "Controller\\": "src/App/Controller"
+            "Controller\\": "src/App/Controller",
+            "Retro\\Constructor\\": "src/Retro/Constructor"
         }
     },
     "authors": [

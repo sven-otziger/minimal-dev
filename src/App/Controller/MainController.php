@@ -21,6 +21,10 @@ class MainController
 			case 'harambe':
 				header("Location: https://bit.ly/3KiFSE9");
 				break;
+			case 'class':
+				$retro = new RetroController();
+				$retro->route();
+				break;
 			default:
 				require __DIR__ . '/../html/404.html';
 		}

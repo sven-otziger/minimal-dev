@@ -21,9 +21,9 @@ class Animal
 		$test = 1;
 
 		if ($this->isEndangered) {
-			$printString .= " Sadly, it is an endangered species";
+			$printString .= " Sadly, it is an endangered species.<br><br>";
 		} else {
-			$printString .= " Luckily, it is not endangered";
+			$printString .= " Luckily, it is not endangered.<br><br>";
 		}
 		echo $printString;
 	}

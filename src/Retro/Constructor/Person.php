@@ -23,15 +23,22 @@ class Person
 	{
 		$printInterests = '';
 		$length = count($this->interests);
-		for ($i = 0; $i++, $i < $length;) {
-			if ($i = $length) {
-				$printInterests .= " and {$this->interests[$i]}";
-			}
+		for ($i = 0; $i < $length; $i++) {
+			if ($i === $length - 1) {
+				$printInterests .= " and {$this->interests[$i]}.";
+			} else {
+				if ($i === $length - 2) {
+					$printInterests .= "{$this->interests[$i]} ";
 
-			$printInterests += $this->interests[$i];
+				} else {
+					$printInterests .= "{$this->interests[$i]}, ";
+
+				}
+
+			}
 		}
 
-		echo "{$this->name} is {$this->age} year old and {$this->height}cm tall. This person likes {$$printInterests}";
+		echo "{$this->name} is {$this->age} year old and {$this->height}cm tall. This person likes {$printInterests}<br><br>";
 	}
 
 }
