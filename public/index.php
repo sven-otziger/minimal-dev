@@ -13,33 +13,35 @@ $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
-// 06 simple routing
-$request = $_SERVER['REQUEST_URI'];
-$main = new \Controller\MainController();
-$main->route($request);
+// routing with symfony
+// ::class		returns fully qualified classname
+$routeSource = [
+	[
+		'path' => '/blog/{slug}',
+		'controller' => ['_controller' => BlogController::class],
+		'name' => 'blog_show'
+	],
+	[
+		'path' => '/demo/index',
+		'controller' => ['_controller' => \Controller\DemoController::class],
+		'name' => 'route'
+	]
 
+];
+// stores a combination of path and route
+$routes = new RouteCollection();
 
-//// routing with symfony
-//// ::class		returns fully qualified classname
-//$route = new Route('/blog/{slug}', ['_controller' => BlogController::class]);
-//$routes = new RouteCollection();
-//$routes->add('blog_show', $route);
-//
-//$context = new RequestContext();
-//
-//// Routing can match routes with incoming requests
-//$matcher = new UrlMatcher($routes, $context);
-//$parameters = $matcher->match('/blog/lorem-ipsum');
-//
-//// $parameters = [
-////     '_controller' => 'App\Controller\BlogController',
-////     'slug' => 'lorem-ipsum',
-////     '_route' => 'blog_show'
-//// ]
-//
-//// Routing can also generate URLs for a given route
-////$generator = new UrlGenerator($routes, $context);
-////$url = $generator->generate('blog_show', [
-////	'slug' => 'my-blog-post',
-////	]);
-//
+foreach ($routeSource as $item) {
+	$route = new Route($item['path'], $item['controller']);
+	$routes->add($item['name'], $route);
+}
+
+$context = new RequestContext();
+$context->setPathInfo($_SERVER['REQUEST_URI']);
+
+$matcher = new UrlMatcher($routes, $context);
+$parameters = $matcher->match($context->getPathInfo());
+
+// creates controller depending on the request and calls method accordingly
+$controller = new $parameters['_controller']($parameters);
+call_user_func(array($controller, $parameters['_route']));

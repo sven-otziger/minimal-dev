@@ -6,10 +6,25 @@ class BlogController
 {
 
 	/**
-	 * @param string $string
 	 * @param string[] $array
 	 */
-	public function __construct(string $string, array $array)
+	public function __construct(array $array)
 	{
+
 	}
+
+	public function blogShow($slug)
+	{
+		echo "blog_show {$slug}";
+	}
+
+	public function _controller()
+	{
+		echo "controller test";
+	}
+
+	public function blog_show() {
+		require __DIR__ . '/../html/blog.html';
+	}
+
 }
