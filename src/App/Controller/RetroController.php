@@ -4,7 +4,11 @@ namespace Controller;
 
 class RetroController
 {
-	public function route() {
+	public function controller() {
 		require __DIR__ . '/../../Retro/Constructor/index.php';
+	}
+
+	public function namespaces() {
+		require __DIR__ . '/../../Retro/Namespaces/index.php';
 	}
 }

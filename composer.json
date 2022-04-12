@@ -6,7 +6,9 @@
             "App\\": "src/App",
             "Test\\": "src/App/Test",
             "Controller\\": "src/App/Controller",
-            "Retro\\Constructor\\": "src/Retro/Constructor"
+            "Retro\\Constructor\\": "src/Retro/Constructor",
+            "Namespaces\\PC\\": "src/Retro/Namespaces/PC",
+            "Namespaces\\TV\\": "src/Retro/Namespaces/TV"
         }
     },
     "authors": [
