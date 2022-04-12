@@ -6,7 +6,7 @@ LABEL maintainer="Markus Liechti"
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # Install additional PHP Extensions: https://github.com/mlocati/docker-php-extension-installer
-RUN install-php-extensions @composer gd xdebug
+RUN install-php-extensions @composer gd xdebug pdo_mysql
 
 WORKDIR /srv/app/
 

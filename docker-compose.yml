@@ -17,6 +17,8 @@ services:
       dockerfile: .docker/nginx/Dockerfile
     networks:
       - app-net
+    depends_on:
+      - php
     ports:
       - "8099:80"
     volumes:
@@ -30,28 +32,25 @@ services:
       dockerfile: .docker/php/Dockerfile
     networks:
       - app-net
-#    depends_on:
-#      - mariadb
+    depends_on:
+      - mariadb
     ports:
       - "9003:9003"
     volumes:
       - .:/srv/app
     env_file: .env
 
-  # ------------------------
-  # Databases
-  # ------------------------
-#  mariadb:
-#    image: mariadb:10.5
-#    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-#    ports:
-#      - "13306:3306"
-#    environment:
-#      - MYSQL_DATABASE=demo
-#      - MYSQL_ROOT_PASSWORD=password
-#    networks:
-#      - app-net
-#    env_file: .env
+# ------------------------
+# Databases
+# ------------------------
+  mariadb:
+    image: mariadb:10.5
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "13306:3306"
+    networks:
+      - app-net
+    env_file: .env
 
   smtp:
     image: mailhog/mailhog
