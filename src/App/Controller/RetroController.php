@@ -11,4 +11,8 @@ class RetroController
 	public function namespaces() {
 		require __DIR__ . '/../../Retro/Namespaces/index.php';
 	}
+
+	public function counter() {
+		require __DIR__ . '/../../Retro/Static/index.php';
+	}
 }

@@ -29,6 +29,10 @@ class MainController
 				$namespace = new RetroController();
 				$namespace->namespaces();
 				break;
+			case 'counter':
+				$counter = new RetroController();
+				$counter->counter();
+				break;
 			default:
 				require __DIR__ . '/../html/404.html';
 		}

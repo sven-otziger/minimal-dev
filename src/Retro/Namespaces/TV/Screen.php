@@ -1,6 +1,6 @@
 <?php
 
-namespace Namespaces\TV;
+namespace Retro\Namespaces\TV;
 
 class Screen
 {

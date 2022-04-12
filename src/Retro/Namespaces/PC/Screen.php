@@ -1,6 +1,6 @@
 <?php
 
-namespace Namespaces\PC;
+namespace Retro\Namespaces\PC;
 
 class Screen
 {
