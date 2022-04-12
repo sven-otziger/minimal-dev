@@ -15,4 +15,8 @@ class RetroController
 	public function counter() {
 		require __DIR__ . '/../../Retro/Static/index.php';
 	}
+
+	public function inheritance() {
+		require __DIR__ . '/../../Retro/Inheritance/index.php';
+	}
 }

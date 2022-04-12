@@ -33,6 +33,10 @@ class MainController
 				$counter = new RetroController();
 				$counter->counter();
 				break;
+			case 'inheritance':
+				$inheritance = new RetroController();
+				$inheritance->inheritance();
+				break;
 			default:
 				require __DIR__ . '/../html/404.html';
 		}
