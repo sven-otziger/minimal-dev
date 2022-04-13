@@ -23,11 +23,15 @@ class DatabaseService
 		return $this->connection;
 	}
 
-	public function execute(string $query, array $parameters)
+	public function execute(string $query, array $parameters): array
 	{
 		$statement = $this->connection->prepare($query);
 		$statement->execute($parameters);
-		return $statement->fetchAll();
+		$result = [];
+		while($row = $statement->fetchObject()) {
+			$result[] = $row;
+		}
+		return $result;
 	}
 
 	/* controller mit ganzer Entität
