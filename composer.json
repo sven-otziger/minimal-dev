@@ -12,7 +12,8 @@
             "Retro\\Static\\": "src/Retro/Static",
             "Retro\\Inheritance\\": "src/Retro/Inheritance",
             "Retro\\Serialization\\": "src/Retro/Serialization",
-            "Service\\": "src/App/service"
+            "Service\\": "src/App/service",
+            "Exception\\": "src/App/Exception"
         }
     },
     "authors": [
