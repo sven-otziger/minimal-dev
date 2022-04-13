@@ -12,7 +12,9 @@
             "Retro\\Namespaces\\TV\\": "src/Retro/Namespaces/TV",
             "Retro\\Static\\": "src/Retro/Static",
             "Retro\\Inheritance\\": "src/Retro/Inheritance",
-            "Retro\\Serialization\\": "src/Retro/Serialization"
+            "Retro\\Serialization\\": "src/Retro/Serialization",
+            "Exception\\": "src/App/Exception",
+            "Repository\\": "src/App/Repositoy"
         }
     },
     "authors": [
@@ -24,6 +26,7 @@
     "require": {
         "filp/whoops": "^2.14",
         "symfony/routing": "^6.0",
+        "twbs/bootstrap": "^5.1",
         "robmorgan/phinx": "^0.12.10"
     }
 }
