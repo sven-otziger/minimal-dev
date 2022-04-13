@@ -30,8 +30,32 @@ $routeSource = [
 		'path' => '/retro/{slug}',
 		'controller' => ['_controller' => \Controller\RetroController::class],
 		'name' => 'serialization'
+	],
+	[
+		'path' => '/readUsers',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'readUsers'
+	],
+	[
+		'path' => '/readUser/{id}',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'readUser'
+	],
+	[
+		'path' => '/createUser/{username}/{password}',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'createUser'
+	],
+	[
+		'path' => '/updateUser/{id}/{username}/{password}',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'updateUser'
+	],
+	[
+		'path' => '/deleteUser/{id}',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'deleteUser'
 	]
-
 ];
 // stores a combination of path and route
 $routes = new RouteCollection();
@@ -49,4 +73,8 @@ $parameters = $matcher->match($context->getPathInfo());
 
 // creates controller depending on the request and calls method accordingly
 $controller = new $parameters['_controller']($parameters);
-call_user_func(array($controller, $parameters['_route']));
+
+$arguments = array_filter($parameters, function($index)  {
+	return ($index != '_controller' && $index != '_route');
+}, ARRAY_FILTER_USE_KEY );
+call_user_func_array(array($controller, $parameters['_route']), $arguments);
