@@ -4,7 +4,7 @@ namespace Controller;
 
 class RetroController
 {
-	public function controller() {
+	public function constructor() {
 		require __DIR__ . '/../../Retro/Constructor/index.php';
 	}
 
@@ -12,11 +12,15 @@ class RetroController
 		require __DIR__ . '/../../Retro/Namespaces/index.php';
 	}
 
-	public function counter() {
+	public function static() {
 		require __DIR__ . '/../../Retro/Static/index.php';
 	}
 
 	public function inheritance() {
 		require __DIR__ . '/../../Retro/Inheritance/index.php';
+	}
+
+	public function serialization() {
+		require __DIR__ . '/../../Retro/Serialization/index.php';
 	}
 }

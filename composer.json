@@ -10,7 +10,8 @@
             "Retro\\Namespaces\\PC\\": "src/Retro/Namespaces/PC",
             "Retro\\Namespaces\\TV\\": "src/Retro/Namespaces/TV",
             "Retro\\Static\\": "src/Retro/Static",
-            "Retro\\Inheritance\\": "src/Retro/Inheritance"
+            "Retro\\Inheritance\\": "src/Retro/Inheritance",
+            "Retro\\Serialization\\": "src/Retro/Serialization"
         }
     },
     "authors": [

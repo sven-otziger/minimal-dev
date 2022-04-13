@@ -25,6 +25,11 @@ $routeSource = [
 		'path' => '/demo/index',
 		'controller' => ['_controller' => \Controller\DemoController::class],
 		'name' => 'route'
+	],
+	[
+		'path' => '/retro/{slug}',
+		'controller' => ['_controller' => \Controller\RetroController::class],
+		'name' => 'serialization'
 	]
 
 ];
