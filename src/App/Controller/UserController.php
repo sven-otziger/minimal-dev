@@ -12,7 +12,15 @@ class UserController extends AbstractController
 {
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 
-	public function readUsers(): void
+	public function __construct(array $parameters, array $arguments)
+	{
+		parent::__construct();
+		//
+		call_user_func_array(array($this, $parameters['_route']),$arguments);
+
+	}
+
+	function readUsers(): void
 	{
 		$data = $this->dbService->execute("SELECT * FROM user", []);
 		echo "<pre>";

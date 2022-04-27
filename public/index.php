@@ -71,10 +71,9 @@ $context->setPathInfo($_SERVER['REQUEST_URI']);
 $matcher = new UrlMatcher($routes, $context);
 $parameters = $matcher->match($context->getPathInfo());
 
-// creates controller depending on the request and calls method accordingly
-$controller = new $parameters['_controller']($parameters);
-
-$arguments = array_filter($parameters, function($index)  {
+$arguments = array_filter($parameters, function ($index) {
 	return ($index != '_controller' && $index != '_route');
-}, ARRAY_FILTER_USE_KEY );
-call_user_func_array(array($controller, $parameters['_route']), $arguments);
+}, ARRAY_FILTER_USE_KEY);
+
+// creates controller depending on the request
+$controller = new $parameters['_controller']($parameters, $arguments);
