@@ -15,7 +15,7 @@ class UserController extends AbstractController
 	public function __construct(array $parameters, array $arguments)
 	{
 		parent::__construct();
-		//
+		// function call
 		call_user_func_array(array($this, $parameters['_route']),$arguments);
 
 	}
