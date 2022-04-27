@@ -8,33 +8,31 @@ use Exception\UserException;
 use Exception\ShortPasswordException;
 use Service\DatabaseService;
 
-class UserController
+class UserController extends AbstractController
 {
-	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])/";
+	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 
-	public function readUsers()
+	public function readUsers(): void
 	{
-		$dbService = new DatabaseService();
-		$data = $dbService->execute("SELECT * FROM user", []);
+		$data = $this->dbService->execute("SELECT * FROM user", []);
 		echo "<pre>";
 		var_dump($data);
 		echo "</pre>";
 	}
 
-	public function readUser($id)
+	public function readUser($id): void
 	{
-		$dbService = new DatabaseService();
-		$data = $dbService->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
+		$data = $this->dbService->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
 		echo "<pre>";
 		var_dump($data);
 		echo "</pre>";
 	}
 
-	public function createUser($username, $password)
+	public function createUser($username, $password): void
 	{
 		try {
 			// check username
-			if($this->checkOnDuplicatedUsername($username)){
+			if ($this->checkOnDuplicatedUsername($username)) {
 				throw new DuplicateUserException();
 			}
 
@@ -46,23 +44,22 @@ class UserController
 			}
 
 			// create user
-			$dbService = new DatabaseService();
-			$data = $dbService->execute("INSERT INTO user (username, password) VALUES (:username, :password)",
+			$data = $this->dbService->execute("INSERT INTO user (username, password) VALUES (:username, :password)",
 				["username" => $username, "password" => $password]);
 
 			// display changes:
-			$lastId = $dbService->getConnection()->lastInsertId();
+			$lastId = $this->dbService->getConnection()->lastInsertId();
 			$this->readUser($lastId);
 		} catch (UserException $e) {
 			echo $e->getMessage();
 		}
 	}
 
-	public function updateUser($id, $username, $password)
+	public function updateUser($id, $username, $password): void
 	{
 		try {
 			// check username
-			if($this->checkOnDuplicatedUsername($username)){
+			if ($this->checkOnDuplicatedUsername($username)) {
 				throw new DuplicateUserException();
 			}
 
@@ -74,8 +71,7 @@ class UserController
 			}
 
 			// create user
-			$dbService = new DatabaseService();
-			$data = $dbService->execute("UPDATE user SET username = :username, password = :password WHERE id = :id",
+			$data = $this->dbService->execute("UPDATE user SET username = :username, password = :password WHERE id = :id",
 				["id" => $id, "username" => $username, "password" => $password]);
 //		display changes:
 			$this->readUser($id);
@@ -85,19 +81,17 @@ class UserController
 
 	}
 
-	public function deleteUser($id)
+	public function deleteUser($id): void
 	{
-		$dbService = new DatabaseService();
-		$data = $dbService->execute("DELETE FROM user WHERE id = :id", ["id" => $id]);
+		$data = $this->dbService->execute("DELETE FROM user WHERE id = :id", ["id" => $id]);
 	}
 
 	/**
 	 * @return true if the username from the URL matches with an existing one
-	**/
+	 **/
 	private function checkOnDuplicatedUsername($username): bool
 	{
-		$dbServiceUser = new DatabaseService();
-		$dataUsers = $dbServiceUser->execute("SELECT * FROM user", []);
+		$dataUsers = $this->dbService->execute("SELECT * FROM user", []);
 
 		foreach ($dataUsers as $user) {
 			if ($username == $user->username) {
