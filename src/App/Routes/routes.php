@@ -41,5 +41,10 @@ return [
 		'path' => '/deleteUser/{id}',
 		'controller' => ['_controller' => \Controller\UserController::class],
 		'name' => 'deleteUser'
+	],
+	[
+		'path' => '/readUserWhereUsernameLike/{search}',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'readUserWhereUsernameLike'
 	]
 ];

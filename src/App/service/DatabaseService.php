@@ -5,8 +5,9 @@ namespace Service;
 class DatabaseService
 {
 	private \PDO $connection;
+	private static ?DatabaseService $dbService = null;
 
-	public function __construct()
+	private function __construct()
 	{
 		try {
 			$this->connection = new \PDO(
@@ -18,9 +19,12 @@ class DatabaseService
 		}
 	}
 
-	public function getConnection()
+	public static function getInstance(): DatabaseService
 	{
-		return $this->connection;
+		if (self::$dbService === null) {
+			self::$dbService = new DatabaseService();
+		}
+		return self::$dbService;
 	}
 
 	public function execute(string $query, array $parameters): array
@@ -28,10 +32,15 @@ class DatabaseService
 		$statement = $this->connection->prepare($query);
 		$statement->execute($parameters);
 		$result = [];
-		while($row = $statement->fetchObject()) {
+		while ($row = $statement->fetchObject()) {
 			$result[] = $row;
 		}
 		return $result;
+	}
+
+	public function getConnection(): \PDO
+	{
+		return $this->connection;
 	}
 
 	/* controller mit ganzer Entität
@@ -48,6 +57,7 @@ class DatabaseService
 		- Data Transfer Object erstellen
 		- DTO in Tabelle speichern
 	*/
+
 
 
 }

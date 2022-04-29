@@ -2,27 +2,28 @@
 
 namespace Controller;
 
+use Cassandra\Date;
 use Exception\DuplicateUserException;
+use Exception\InexistentUserException;
 use Exception\InvalidPasswordException;
 use Exception\UserException;
 use Exception\ShortPasswordException;
 use Service\DatabaseService;
 
-class UserController extends AbstractController
+class UserController
 {
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 
 	public function __construct(array $parameters, array $arguments)
 	{
-		parent::__construct();
 		// function call
-		call_user_func_array(array($this, $parameters['_route']),$arguments);
-
+		call_user_func_array(array($this, $parameters['_route']), $arguments);
 	}
 
 	function readUsers(): void
 	{
-		$data = $this->dbService->execute("SELECT * FROM user", []);
+		$data = DatabaseService::getInstance()->execute("SELECT * FROM user", []);
+
 		echo "<pre>";
 		var_dump($data);
 		echo "</pre>";
@@ -30,10 +31,19 @@ class UserController extends AbstractController
 
 	public function readUser($id): void
 	{
-		$data = $this->dbService->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
-		echo "<pre>";
-		var_dump($data);
-		echo "</pre>";
+		try {
+			// check if object exists
+			if (!$this->checkUserExistence($id)) {
+				throw new InexistentUserException();
+			}
+			$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
+
+			echo "<pre>";
+			var_dump($data);
+			echo "</pre>";
+		} catch (UserException $e) {
+			echo $e->getMessage();
+		}
 	}
 
 	public function createUser($username, $password): void
@@ -52,11 +62,11 @@ class UserController extends AbstractController
 			}
 
 			// create user
-			$data = $this->dbService->execute("INSERT INTO user (username, password) VALUES (:username, :password)",
+			$data = DatabaseService::getInstance()->execute("INSERT INTO user (username, password) VALUES (:username, :password)",
 				["username" => $username, "password" => $password]);
 
 			// display changes:
-			$lastId = $this->dbService->getConnection()->lastInsertId();
+			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
 			$this->readUser($lastId);
 		} catch (UserException $e) {
 			echo $e->getMessage();
@@ -66,6 +76,10 @@ class UserController extends AbstractController
 	public function updateUser($id, $username, $password): void
 	{
 		try {
+			// check if object exists
+			if (!$this->checkUserExistence($id)) {
+				throw new InexistentUserException();
+			}
 			// check username
 			if ($this->checkOnDuplicatedUsername($username)) {
 				throw new DuplicateUserException();
@@ -79,7 +93,7 @@ class UserController extends AbstractController
 			}
 
 			// create user
-			$data = $this->dbService->execute("UPDATE user SET username = :username, password = :password WHERE id = :id",
+			DatabaseService::getInstance()->execute("UPDATE user SET username = :username, password = :password WHERE id = :id",
 				["id" => $id, "username" => $username, "password" => $password]);
 //		display changes:
 			$this->readUser($id);
@@ -91,15 +105,40 @@ class UserController extends AbstractController
 
 	public function deleteUser($id): void
 	{
-		$data = $this->dbService->execute("DELETE FROM user WHERE id = :id", ["id" => $id]);
+		try {
+			if (!$this->checkUserExistence($id)) {
+				throw new InexistentUserException();
+			}
+			DatabaseService::getInstance()->execute("DELETE FROM user WHERE id = :id", ["id" => $id]);
+			echo "The user with the id {$id} has been deleted";
+		} catch (UserException $e) {
+			echo $e->getMessage();
+		}
+	}
+
+	public function readUserWhereUsernameLike($search)
+	{
+//		works
+//		$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE username LIKE '%er'", []);
+
+//		user parameter from array --> dynamically
+		$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE username LIKE :search", ["search" => '%' . $search . '%']);
+
+//		works
+//		$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE username = :name", ["name" => $name]);
+
+		echo "<pre>";
+		var_dump($data);
+		echo "</pre>";
 	}
 
 	/**
-	 * @return true if the username from the URL matches with an existing one
+	 * @param String $username
+	 * @return bool true if the username from the URL matches with an existing one
 	 **/
-	private function checkOnDuplicatedUsername($username): bool
+	private function checkOnDuplicatedUsername(string $username): bool
 	{
-		$dataUsers = $this->dbService->execute("SELECT * FROM user", []);
+		$dataUsers = DatabaseService::getInstance()->execute("SELECT * FROM user", []);
 
 		foreach ($dataUsers as $user) {
 			if ($username == $user->username) {
@@ -107,5 +146,19 @@ class UserController extends AbstractController
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param int $id
+	 * @return bool true if the user does exist
+	 */
+	private function checkUserExistence(int $id): bool
+	{
+		$objectToEdit = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
+
+		if (count($objectToEdit) === 0) {
+			return false;
+		}
+		return true;
 	}
 }
