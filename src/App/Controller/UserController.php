@@ -2,16 +2,19 @@
 
 namespace Controller;
 
-use Cassandra\Date;
 use Exception\DuplicateUserException;
 use Exception\InexistentUserException;
 use Exception\InvalidPasswordException;
 use Exception\UserException;
 use Exception\ShortPasswordException;
 use Service\DatabaseService;
+use Test\ORM;
 
 class UserController
 {
+	// move query part of controller is seperate file called XYRepository
+	// db call are then methods of said class
+
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 
 	public function __construct(array $parameters, array $arguments)
@@ -27,6 +30,15 @@ class UserController
 		echo "<pre>";
 		var_dump($data);
 		echo "</pre>";
+		echo "<hr>";
+
+		$test = new ORM(3);
+
+		echo "<pre>ORM Object: ";
+		var_dump($test);
+		echo "</pre>";
+
+
 	}
 
 	public function readUser($id): void
