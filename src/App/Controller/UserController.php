@@ -7,6 +7,7 @@ use Exception\InexistentUserException;
 use Exception\InvalidPasswordException;
 use Exception\UserException;
 use Exception\ShortPasswordException;
+use Repository\UserRepository;
 use Service\DatabaseService;
 use Test\ORM;
 
@@ -16,16 +17,18 @@ class UserController
 	// db call are then methods of said class
 
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
+	private UserRepository $userRepo;
 
 	public function __construct(array $parameters, array $arguments)
 	{
+		$this->userRepo = new UserRepository();
 		// function call
 		call_user_func_array(array($this, $parameters['_route']), $arguments);
 	}
 
 	function readUsers(): void
 	{
-		$data = DatabaseService::getInstance()->execute("SELECT * FROM user", []);
+		$data = $this->userRepo->findAllUsers();
 
 		echo "<pre>";
 		var_dump($data);
@@ -41,14 +44,14 @@ class UserController
 
 	}
 
-	public function readUser($id): void
+	public function readUser(int $id): void
 	{
 		try {
 			// check if object exists
 			if (!$this->checkUserExistence($id)) {
 				throw new InexistentUserException();
 			}
-			$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
+			$data = $this->userRepo->findUserWithID($id);
 
 			echo "<pre>";
 			var_dump($data);
@@ -58,7 +61,7 @@ class UserController
 		}
 	}
 
-	public function createUser($username, $password): void
+	public function createUser(string $username, string $password): void
 	{
 		try {
 			// check username
@@ -74,18 +77,22 @@ class UserController
 			}
 
 			// create user
-			$data = DatabaseService::getInstance()->execute("INSERT INTO user (username, password) VALUES (:username, :password)",
-				["username" => $username, "password" => $password]);
+			$this->userRepo->createUser($username, $password);
 
 			// display changes:
 			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
-			$this->readUser($lastId);
+			$data = $this->userRepo->findUserWithID($lastId);
+
+			echo "<pre>";
+			var_dump($data);
+			echo "</pre>";
+
 		} catch (UserException $e) {
 			echo $e->getMessage();
 		}
 	}
 
-	public function updateUser($id, $username, $password): void
+	public function updateUser(int $id, string $username, string $password): void
 	{
 		try {
 			// check if object exists
@@ -105,10 +112,13 @@ class UserController
 			}
 
 			// create user
-			DatabaseService::getInstance()->execute("UPDATE user SET username = :username, password = :password WHERE id = :id",
-				["id" => $id, "username" => $username, "password" => $password]);
+			$this->userRepo->updateUser($id, $username, $password);
 //		display changes:
-			$this->readUser($id);
+			$data = $this->userRepo->findUserWithID($id);
+
+			echo "<pre>";
+			var_dump($data);
+			echo "</pre>";
 		} catch (UserException $e) {
 			echo $e->getMessage();
 		}
@@ -121,7 +131,7 @@ class UserController
 			if (!$this->checkUserExistence($id)) {
 				throw new InexistentUserException();
 			}
-			DatabaseService::getInstance()->execute("DELETE FROM user WHERE id = :id", ["id" => $id]);
+			$this->userRepo->deleteUser($id);
 			echo "The user with the id {$id} has been deleted";
 		} catch (UserException $e) {
 			echo $e->getMessage();
@@ -130,14 +140,7 @@ class UserController
 
 	public function readUserWhereUsernameLike($search)
 	{
-//		works
-//		$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE username LIKE '%er'", []);
-
-//		user parameter from array --> dynamically
-		$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE username LIKE :search", ["search" => '%' . $search . '%']);
-
-//		works
-//		$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE username = :name", ["name" => $name]);
+		$data = $this->userRepo->findUserWhereUsernameLike($search);
 
 		echo "<pre>";
 		var_dump($data);
@@ -150,7 +153,7 @@ class UserController
 	 **/
 	private function checkOnDuplicatedUsername(string $username): bool
 	{
-		$dataUsers = DatabaseService::getInstance()->execute("SELECT * FROM user", []);
+		$dataUsers = $this->userRepo->findAllUsers();
 
 		foreach ($dataUsers as $user) {
 			if ($username == $user->username) {
@@ -166,7 +169,7 @@ class UserController
 	 */
 	private function checkUserExistence(int $id): bool
 	{
-		$objectToEdit = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
+		$objectToEdit = $this->userRepo->findUserWithID($id);
 
 		if (count($objectToEdit) === 0) {
 			return false;
