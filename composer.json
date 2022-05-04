@@ -25,6 +25,7 @@
     ],
     "require": {
         "filp/whoops": "^2.14",
-        "twbs/bootstrap": "^5.1"
+        "twbs/bootstrap": "^5.1",
+        "symfony/routing": "^6.0"
     }
 }
