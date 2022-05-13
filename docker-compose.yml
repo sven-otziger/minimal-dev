@@ -34,15 +34,16 @@ services:
       - app-net
     depends_on:
       - mariadb
+    user: 1000:1000
     ports:
       - "9003:9003"
     volumes:
       - .:/srv/app
     env_file: .env
 
-# ------------------------
-# Databases
-# ------------------------
+  # ------------------------
+  # Databases
+  # ------------------------
   mariadb:
     image: mariadb:10.5
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci

@@ -46,5 +46,10 @@ return [
 		'path' => '/readUserWhereUsernameLike/{search}',
 		'controller' => ['_controller' => \Controller\UserController::class],
 		'name' => 'readUserWhereUsernameLike'
+	],
+	[
+		'path' => '/home',
+		'controller' => ['_controller' => \Controller\WebsiteController::class],
+		'name' => 'home'
 	]
 ];
