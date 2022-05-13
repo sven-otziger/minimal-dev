@@ -10,6 +10,9 @@ use Exception\ShortPasswordException;
 use Repository\UserRepository;
 use Service\DatabaseService;
 use Test\ORM;
+use Twig\Environment;
+use Twig\Error\Error;
+use Twig\Loader\FilesystemLoader;
 
 class UserController
 {
@@ -18,10 +21,13 @@ class UserController
 
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 	private UserRepository $userRepo;
+    private Environment $twig;
 
 	public function __construct(array $parameters, array $arguments)
 	{
 		$this->userRepo = new UserRepository();
+        $twigLoader = new FilesystemLoader(dirname(__DIR__) . '/html/');
+        $this->twig = new Environment($twigLoader, ['cache' => dirname(__DIR__, 3) . '/cache']);
 		// function call
 		call_user_func_array(array($this, $parameters['_route']), $arguments);
 	}
@@ -35,9 +41,14 @@ class UserController
 		echo "</pre>";
 		echo "<hr>";
 
-		$test = new ORM(3);
+		$test = new ORM(1);
+        try {
+            echo $this->twig->render('index.html');
+        } catch (Error $e) {
+            echo $e->getTraceasString();
+        }
 
-		echo "<pre>ORM Object: ";
+        echo "<pre>ORM Object: ";
 		var_dump($test);
 		echo "</pre>";
 
