@@ -48,7 +48,7 @@ services:
     image: mariadb:10.5
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-      - "13306:3306"
+      - "23306:3306"
     networks:
       - app-net
     env_file: .env
@@ -56,4 +56,4 @@ services:
   smtp:
     image: mailhog/mailhog
     ports:
-      - 8025:8025
+      - 9025:8025
