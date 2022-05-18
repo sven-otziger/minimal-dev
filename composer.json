@@ -24,6 +24,7 @@
     "require": {
         "filp/whoops": "^2.14",
         "symfony/routing": "^6.0",
-        "robmorgan/phinx": "^0.12.10"
+        "robmorgan/phinx": "^0.12.10",
+        "twig/twig": "^3.4"
     }
 }
