@@ -8,8 +8,8 @@ final class InitialSetup extends AbstractMigration
     public function up(): void
     {
         $userTable = $this->table('user', ['id' => true]);
-        $userTable->addColumn('username', 'string', ['null' => false])
-            ->addColumn('password', 'string', ['null' => false]);
+        $userTable->addColumn('username', 'string', ['null' => false, 'limit' => 64])
+            ->addColumn('password', 'string', ['null' => false, 'limit' => 128]);
         $userTable->insert(['username' => 'test.user', 'password' => 'test1234']);
         $userTable->create();
     }

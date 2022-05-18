@@ -29,6 +29,6 @@
         "robmorgan/phinx": "^0.12.10",
         "twbs/bootstrap": "^5.1",
         "ext-pdo": "*",
-        "twig/twig": "^3.3"
+        "twig/twig": "^3.4"
     }
 }

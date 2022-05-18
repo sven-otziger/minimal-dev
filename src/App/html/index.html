@@ -7,5 +7,8 @@
 <body>
 <h1>Index</h1>
 <p>The MainController redirected to the IndexController which loaded this page.</p>
+{% for user in userList %}
+    {% include 'userDetail.html' %}
+{% endfor %}
 </body>
 </html>

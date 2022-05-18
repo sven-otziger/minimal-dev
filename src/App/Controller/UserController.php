@@ -43,7 +43,7 @@ class UserController
 
 		$test = new ORM(1);
         try {
-            echo $this->twig->render('index.html');
+            echo $this->twig->render('index.html', ['userList' => $data]);
         } catch (Error $e) {
             echo $e->getTraceasString();
         }
