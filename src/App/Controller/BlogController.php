@@ -24,7 +24,7 @@ class BlogController
 	}
 
 	public function blog_show() {
-		require __DIR__ . '/../html/blog.html';
+		require __DIR__ . '/../views/blog.html';
 	}
 
 }

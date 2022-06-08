@@ -38,7 +38,7 @@ class MainController
 				$inheritance->inheritance();
 				break;
 			default:
-				require __DIR__ . '/../html/404.html';
+				require __DIR__ . '/../views/404.html';
 		}
 
 	}

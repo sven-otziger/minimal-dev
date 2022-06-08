@@ -6,6 +6,6 @@ class DemoController
 {
 	public function route()
 	{
-		require __DIR__ . '/../html/demo.html';
+		require __DIR__ . '/../views/demo.html';
 	}
 }
