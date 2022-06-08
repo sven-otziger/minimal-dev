@@ -99,7 +99,7 @@ export function sanitizeHtml(unsafeHtml, allowList, sanitizeFn) {
   }
 
   const domParser = new window.DOMParser()
-  const createdDocument = domParser.parseFromString(unsafeHtml, 'text/html')
+  const createdDocument = domParser.parseFromString(unsafeHtml, 'text/views')
   const elements = [].concat(...createdDocument.body.querySelectorAll('*'))
 
   for (let i = 0, len = elements.length; i < len; i++) {

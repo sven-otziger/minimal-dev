@@ -23,7 +23,7 @@ describe('Backdrop', () => {
   })
 
   describe('show', () => {
-    it('if it is "shown", should append the backdrop html once, on show, and contain "show" class', done => {
+    it('if it is "shown", should append the backdrop views once, on show, and contain "show" class', done => {
       const instance = new Backdrop({
         isVisible: true,
         isAnimated: false
@@ -42,7 +42,7 @@ describe('Backdrop', () => {
       })
     })
 
-    it('if it is not "shown", should not append the backdrop html', done => {
+    it('if it is not "shown", should not append the backdrop views', done => {
       const instance = new Backdrop({
         isVisible: false,
         isAnimated: true
@@ -56,7 +56,7 @@ describe('Backdrop', () => {
       })
     })
 
-    it('if it is "shown" and "animated", should append the backdrop html once, and contain "fade" class', done => {
+    it('if it is "shown" and "animated", should append the backdrop views once, and contain "fade" class', done => {
       const instance = new Backdrop({
         isVisible: true,
         isAnimated: true
@@ -76,7 +76,7 @@ describe('Backdrop', () => {
   })
 
   describe('hide', () => {
-    it('should remove the backdrop html', done => {
+    it('should remove the backdrop views', done => {
       const instance = new Backdrop({
         isVisible: true,
         isAnimated: true

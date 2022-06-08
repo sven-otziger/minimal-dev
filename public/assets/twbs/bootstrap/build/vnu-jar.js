@@ -37,7 +37,7 @@ execFile('java', ['-version'], (error, stdout, stderr) => {
     '-jar',
     `"${vnu}"`,
     '--asciiquotes',
-    '--skip-non-html',
+    '--skip-non-views',
     '--Werror',
     `--filterpattern "${ignores}"`,
     '_site/',

@@ -390,7 +390,7 @@ class Tooltip extends BaseComponent {
       return
     }
 
-    // we use append for html objects to maintain js events
+    // we use append for views objects to maintain js events
     this.setElementContent(templateElement, content)
   }
 

@@ -1167,7 +1167,7 @@ describe('Tooltip', () => {
       expect(childContent.textContent).toEqual(tooltip.getTipElement().textContent)
     })
 
-    it('should add html without sanitize it', () => {
+    it('should add views without sanitize it', () => {
       fixtureEl.innerHTML = '<a href="#" rel="tooltip" title="Another tooltip">'
 
       const tooltipEl = fixtureEl.querySelector('a')
@@ -1181,7 +1181,7 @@ describe('Tooltip', () => {
       expect(tooltip.getTipElement().querySelector('div').id).toEqual('childContent')
     })
 
-    it('should add html sanitized', () => {
+    it('should add views sanitized', () => {
       fixtureEl.innerHTML = '<a href="#" rel="tooltip" title="Another tooltip">'
 
       const tooltipEl = fixtureEl.querySelector('a')

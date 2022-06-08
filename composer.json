@@ -12,7 +12,9 @@
             "Retro\\Namespaces\\TV\\": "src/Retro/Namespaces/TV",
             "Retro\\Static\\": "src/Retro/Static",
             "Retro\\Inheritance\\": "src/Retro/Inheritance",
-            "Retro\\Serialization\\": "src/Retro/Serialization"
+            "Retro\\Serialization\\": "src/Retro/Serialization",
+            "Entity\\": "src/App/Entity",
+            "Repository\\": "src/App/Repository"
         }
     },
     "authors": [
@@ -25,6 +27,18 @@
         "filp/whoops": "^2.14",
         "symfony/routing": "^6.0",
         "robmorgan/phinx": "^0.12.10",
-        "twig/twig": "^3.4"
+        "twig/twig": "^3.4",
+        "doctrine/orm": "^2.11.0",
+        "doctrine/dbal": "^3.2",
+        "doctrine/annotations": "1.13.2",
+        "symfony/yaml": "^5.4",
+        "symfony/cache": "^5.4"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "symfony/var-dumper": "5.4.x-dev"
+    },
+    "scripts": {
+        "doctrine": "vendor/bin/doctrine"
     }
 }
