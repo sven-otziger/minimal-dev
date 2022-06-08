@@ -10,6 +10,9 @@ use Exception\ShortPasswordException;
 use Repository\UserRepository;
 use Service\DatabaseService;
 use Test\ORM;
+use Twig\Environment;
+use Twig\Error\Error;
+use Twig\Loader\FilesystemLoader;
 
 class UserController
 {
@@ -18,15 +21,34 @@ class UserController
 
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 	private UserRepository $userRepo;
+	private Environment $twig;
 
 	public function __construct(array $parameters, array $arguments)
 	{
 		$this->userRepo = new UserRepository();
+		$twigLoader = new FilesystemLoader(dirname(__DIR__) . '/views/templates/');
+		$this->twig = new Environment($twigLoader, ['cache' => dirname(__DIR__, 3) . '/cache']);
+
 		// function call
 		call_user_func_array(array($this, $parameters['_route']), $arguments);
+
 	}
 
-	function readUsers(): void
+	public function templateTesting(): void
+	{
+		echo $this->twig->render('name.html', ['name' => 'Fabien']);
+	}
+
+	public function orm(): void
+	{
+		$test = new ORM(3);
+
+		echo "<pre>ORM Object: ";
+		var_dump($test);
+		echo "</pre>";
+	}
+
+	public function readUsers(): void
 	{
 		$data = $this->userRepo->findAllUsers();
 
@@ -34,14 +56,6 @@ class UserController
 		var_dump($data);
 		echo "</pre>";
 		echo "<hr>";
-
-		$test = new ORM(3);
-
-		echo "<pre>ORM Object: ";
-		var_dump($test);
-		echo "</pre>";
-
-
 	}
 
 	public function readUser(int $id): void
@@ -138,7 +152,7 @@ class UserController
 		}
 	}
 
-	public function readUserWhereUsernameLike($search)
+	public function readUserWhereUsernameLike($search): void
 	{
 		$data = $this->userRepo->findUserWhereUsernameLike($search);
 

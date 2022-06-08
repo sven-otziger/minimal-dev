@@ -48,6 +48,16 @@ return [
 		'name' => 'readUserWhereUsernameLike'
 	],
 	[
+		'path' => '/templateTesting',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'templateTesting'
+	],
+	[
+		'path' => '/orm',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'orm'
+	],
+	[
 		'path' => '/home',
 		'controller' => ['_controller' => \Controller\WebsiteController::class],
 		'name' => 'home'
