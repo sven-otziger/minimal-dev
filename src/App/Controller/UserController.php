@@ -39,6 +39,13 @@ class UserController
 
 	}
 
+	/**
+	 * used to display one or all users
+	 * one --> display/id
+	 * all --> display/all
+	 * @param $id
+	 * @return void
+	 */
 	public function display($id): void
 	{
 		$data = NULL;
