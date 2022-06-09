@@ -48,9 +48,9 @@ return [
 		'name' => 'readUserWhereUsernameLike'
 	],
 	[
-		'path' => '/templateTesting',
+		'path' => '/display/{id}',
 		'controller' => ['_controller' => \Controller\UserController::class],
-		'name' => 'templateTesting'
+		'name' => 'display'
 	],
 	[
 		'path' => '/orm',

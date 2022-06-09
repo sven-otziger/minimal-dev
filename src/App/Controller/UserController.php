@@ -27,16 +27,51 @@ class UserController
 	{
 		$this->userRepo = new UserRepository();
 		$twigLoader = new FilesystemLoader(dirname(__DIR__) . '/views/templates/');
-		$this->twig = new Environment($twigLoader, ['cache' => dirname(__DIR__, 3) . '/cache']);
+
+//		with cache
+//		$this->twig = new Environment($twigLoader, ['cache' => dirname(__DIR__, 3) . '/cache']);
+
+//		without cache
+		$this->twig = new Environment($twigLoader, ['cache' => false]);
 
 		// function call
 		call_user_func_array(array($this, $parameters['_route']), $arguments);
 
 	}
 
-	public function templateTesting(): void
+	public function display($id): void
 	{
-		echo $this->twig->render('name.html', ['name' => 'Fabien']);
+		$data = NULL;
+		if ($id == 'all') {
+			try {
+				$data = $this->userRepo->findAllUsers($id);
+			} catch (UserException $e) {
+				echo $e->getMessage();
+			}
+		} else {
+			try {
+				// check if object exists
+				if (!$this->checkUserExistence($id)) {
+					throw new InexistentUserException();
+				}
+				$data = $this->userRepo->findUserWithID($id);
+			} catch (UserException $e) {
+				echo $e->getMessage();
+			}
+		}
+
+		if (!$data) {
+			return;
+		}
+
+		echo $this->twig->render('show-users.html.twig', ['userList' => $data]);
+
+		try {
+			echo $this->twig->render('name.html.twig', ["user" => $data[0]]);
+		} catch (Error $e) {
+			echo $e->getTraceasString();
+		}
+
 	}
 
 	public function orm(): void

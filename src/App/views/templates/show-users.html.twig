@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <style>
+        .display-users span {
+            width: 100px;
+            display: inline-block;
+        }
+
+        .user-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .display-users {
+            margin: 25px;
+            width: 400px;
+            background-color: rgba(11, 94, 215, 0.2);
+            padding: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+<h3>Listing the fetched Users</h3>
+
+<div class="user-container">
+    {% for user in userList %}
+        <div class="display-users">
+            {% set array = { ('Username'): user.username,
+                ('Password'): user.password,
+                ('Age'): user.age,
+                ('Street'): user.street,
+                ('ZIP'): user.zip_code,
+                ('Number'): user.house_number,
+                ('City'): user.city
+            } %}
+            {% for key, value in array %}
+                {% if value != '' and value != 0 %}
+                    <p><span>{{ key }}</span>{{ value }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
