@@ -148,14 +148,9 @@ class UserController
 			// create user
 			$this->userRepo->createUser($username, $password, $age, $street, $number, $zip, $city);
 
-			// display changes:
+			// display the new user:
 			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
-			$data = $this->userRepo->findUserWithID($lastId);
-
-			echo "<pre>";
-			echo "User wurde erfolgreich erstellt.";
-			var_dump($data);
-			echo "</pre>";
+			header('Location: display/'.$lastId);
 
 		} catch (UserException $e) {
 			echo $e->getMessage();
