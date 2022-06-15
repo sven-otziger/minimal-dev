@@ -117,8 +117,21 @@ class UserController
 		}
 	}
 
-	public function createUser(string $username, string $password): void
+	public function createUserForm(): void
 	{
+		require_once __DIR__ . "/../views/create-user-form.html";
+	}
+
+	public function createUser(array $payload): void
+	{
+		$username = $payload['username'];
+		$password = $payload['password'];
+		$age = $payload['age'];
+		$street = $payload['street'];
+		$number = $payload['number'];
+		$zip = $payload['zip'];
+		$city = $payload['city'];
+
 		try {
 			// check username
 			if ($this->checkOnDuplicatedUsername($username)) {
@@ -133,13 +146,14 @@ class UserController
 			}
 
 			// create user
-			$this->userRepo->createUser($username, $password);
+			$this->userRepo->createUser($username, $password, $age, $street, $number, $zip, $city);
 
 			// display changes:
 			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
 			$data = $this->userRepo->findUserWithID($lastId);
 
 			echo "<pre>";
+			echo "User wurde erfolgreich erstellt.";
 			var_dump($data);
 			echo "</pre>";
 

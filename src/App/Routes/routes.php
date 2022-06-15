@@ -28,9 +28,14 @@ return [
 		'name' => 'readUser'
 	],
 	[
-		'path' => '/createUser/{username}/{password}',
+		'path' => '/createUser',
 		'controller' => ['_controller' => \Controller\UserController::class],
 		'name' => 'createUser'
+	],
+	[
+		'path' => '/create-user-form',
+		'controller' => ['_controller' => \Controller\UserController::class],
+		'name' => 'createUserForm'
 	],
 	[
 		'path' => '/updateUser/{id}/{username}/{password}',

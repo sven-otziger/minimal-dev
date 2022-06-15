@@ -26,10 +26,19 @@ class UserRepository
 		return DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
 	}
 
-	public function createUser(string $username, string $password)
+	public function createUser(string $username, string $password, int $age, string $street, string $number, string $zip, string $city)
 	{
-		DatabaseService::getInstance()->execute("INSERT INTO user (username, password) VALUES (:username, :password)",
-			["username" => $username, "password" => $password]);
+		DatabaseService::getInstance()->execute("INSERT INTO user (username, password, age, street, house_number, zip_code, city) 
+			VALUES (:username, :password, :age, :street, :house_number, :zip_code, :city)",
+			[
+				"username" 		=> $username,
+				"password" 		=> $password,
+				"age" 			=> $age,
+				"street" 		=> $street,
+				"house_number" 	=> $number,
+				"zip_code" 		=> $zip,
+				"city" 			=> $city
+			]);
 	}
 
 	public function updateUser(int $id, string $username, string $password): void
