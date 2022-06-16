@@ -39,7 +39,7 @@
                 ('City'): user.city
             } %}
             {% for key, value in array %}
-                {% if value != '' and value != 0 %}
+                {% if value != '' or value != 0 %}
                     <p><span>{{ key }}</span>{{ value }}</p>
                 {% endif %}
             {% endfor %}
