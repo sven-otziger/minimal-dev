@@ -148,7 +148,7 @@ class UserController
 
 			// display the new user:
 			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
-			header('Location: display/'.$lastId);
+			header('Location: display/' . $lastId);
 
 		} catch (UserException $e) {
 			echo $e->getMessage();
