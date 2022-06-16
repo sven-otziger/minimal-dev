@@ -71,10 +71,8 @@ class UserController
 			return;
 		}
 
-		echo $this->twig->render('show-users.html.twig', ['userList' => $data]);
-
 		try {
-			echo $this->twig->render('name.html.twig', ["user" => $data[0]]);
+			echo $this->twig->render('show-users.html.twig', ['userList' => $data]);
 		} catch (Error $e) {
 			echo $e->getTraceasString();
 		}

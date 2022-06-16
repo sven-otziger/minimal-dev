@@ -28,8 +28,8 @@ class UserRepository
 
 	public function createUser(string $username, string $password, int $age, string $street, string $number, string $zip, string $city)
 	{
-		DatabaseService::getInstance()->execute("INSERT INTO user (username, password, age, street, house_number, zip_code, city) 
-			VALUES (:username, :password, :age, :street, :house_number, :zip_code, :city)",
+		DatabaseService::getInstance()->execute("INSERT INTO user (username, password, age, street, house_number, zip_code, city, deleted) 
+			VALUES (:username, :password, :age, :street, :house_number, :zip_code, :city, false)",
 			[
 				"username" 		=> $username,
 				"password" 		=> $password,

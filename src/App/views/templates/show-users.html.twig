@@ -29,21 +29,23 @@
 
 <div class="user-container">
     {% for user in userList %}
-        <div class="display-users">
-            {% set array = { ('Username'): user.username,
-                ('Password'): user.password,
-                ('Age'): user.age,
-                ('Street'): user.street,
-                ('ZIP'): user.zip_code,
-                ('Number'): user.house_number,
-                ('City'): user.city
-            } %}
-            {% for key, value in array %}
-                {% if value != '' or value != 0 %}
-                    <p><span>{{ key }}</span>{{ value }}</p>
-                {% endif %}
-            {% endfor %}
-        </div>
+        {% if user.deleted == 0 %}
+            <div class="display-users">
+                {% set array = { ('Username'): user.username,
+                    ('Password'): user.password,
+                    ('Age'): user.age,
+                    ('Street'): user.street,
+                    ('ZIP'): user.zip_code,
+                    ('Number'): user.house_number,
+                    ('City'): user.city
+                } %}
+                {% for key, value in array %}
+                    {% if value != '' or value != 0 %}
+                        <p><span>{{ key }}</span>{{ value }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
     {% endfor %}
 </div>
 
