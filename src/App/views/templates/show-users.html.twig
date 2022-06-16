@@ -44,6 +44,9 @@
                         <p><span>{{ key }}</span>{{ value }}</p>
                     {% endif %}
                 {% endfor %}
+                {% if userList|length == 1 %}
+                    <p>This text only appears when a single user is displayed</p>
+                {% endif %}
             </div>
         {% endif %}
     {% endfor %}
