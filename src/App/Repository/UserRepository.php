@@ -49,7 +49,7 @@ class UserRepository
 
 	public function deleteUser(int $id)
 	{
-		DatabaseService::getInstance()->execute("DELETE FROM user WHERE id = :id", ["id" => $id]);
+		DatabaseService::getInstance()->execute("UPDATE user SET deleted = 1 WHERE id = :id", ["id" => $id]);
 
 	}
 
