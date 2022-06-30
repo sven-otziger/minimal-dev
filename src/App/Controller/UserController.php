@@ -16,8 +16,6 @@ use Twig\Loader\FilesystemLoader;
 
 class UserController
 {
-	// move query part of controller is seperate file called XYRepository
-	// db call are then methods of said class
 
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 	private UserRepository $userRepo;
