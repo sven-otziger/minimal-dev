@@ -26,7 +26,7 @@ class UserRepository
 		return DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
 	}
 
-	public function createUser(string $username, string $password, int $age, string $street, string $number, string $zip, string $city)
+	public function createUser(string $username, string $password, int $age, string $street, string $number, string $zip, string $city): void
 	{
 		DatabaseService::getInstance()->execute("INSERT INTO user (username, password, age, street, house_number, zip_code, city, deleted) 
 			VALUES (:username, :password, :age, :street, :house_number, :zip_code, :city, false)",
@@ -47,7 +47,7 @@ class UserRepository
 			["id" => $id, "username" => $username, "password" => $password]);
 	}
 
-	public function deleteUser(int $id)
+	public function deleteUser(int $id): void
 	{
 		DatabaseService::getInstance()->execute("UPDATE user SET deleted = 1 WHERE id = :id", ["id" => $id]);
 
