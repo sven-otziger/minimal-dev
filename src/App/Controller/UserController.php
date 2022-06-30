@@ -10,32 +10,19 @@ use Exception\ShortPasswordException;
 use Repository\UserRepository;
 use Service\DatabaseService;
 use Test\ORM;
-use Twig\Environment;
 use Twig\Error\Error;
-use Twig\Loader\FilesystemLoader;
 
-class UserController
+
+class UserController extends Controller
 {
-
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 	private UserRepository $userRepo;
-	private Environment $twig;
 
-	public function __construct(array $parameters, array $arguments)
-	{
-		$this->userRepo = new UserRepository();
-		$twigLoader = new FilesystemLoader(dirname(__DIR__) . '/views/templates/');
-
-//		with cache
-//		$this->twig = new Environment($twigLoader, ['cache' => dirname(__DIR__, 3) . '/cache']);
-
-//		without cache
-		$this->twig = new Environment($twigLoader, ['cache' => false]);
-
-		// function call
-		call_user_func_array(array($this, $parameters['_route']), $arguments);
-
-	}
+    public function __construct(array $parameters, array $arguments)
+    {
+        $this->userRepo = new UserRepository();
+        parent::__construct($parameters, $arguments);
+    }
 
 	/**
 	 * used to display one or all users
