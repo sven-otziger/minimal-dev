@@ -45,7 +45,7 @@ return [
 		'name' => 'updateUser'
 	],
 	[
-		'path' => '/deleteUser/{id}',
+		'path' => '/deleteUser',
 		'controller' => [CONTROLLER => \Controller\UserController::class],
 		'name' => 'deleteUser'
 	],

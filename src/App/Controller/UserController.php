@@ -188,14 +188,17 @@ class UserController
 
 	}
 
-	public function deleteUser($id): void
+	public function deleteUser(array $payload): void
 	{
+        $id = $payload['id'];
+        $username = $payload['username'];
+
 		try {
 			if (!$this->checkUserExistence($id)) {
 				throw new InexistentUserException();
 			}
 			$this->userRepo->deleteUser($id);
-			echo "The user with the id {$id} has been deleted";
+			echo "The user with the username \"{$username}\" has been deleted.";
 		} catch (UserException $e) {
 			echo $e->getMessage();
 		}

@@ -45,7 +45,12 @@
                     {% endif %}
                 {% endfor %}
                 {% if userList|length == 1 %}
-                    <p>This text only appears when a single user is displayed</p>
+{#                        <form action="/delete/<?php echo $contact['name']; ?> method='post'">#}
+                    <form action='/deleteUser' method="post" name="user-deletion">
+                        <input type="hidden" name="id" value="{{ user.id }}">
+                        <input type="hidden" name="username" value="{{ user.username }}">
+                        <input type="submit" name="submit" value="Delete">
+                    </form>
                 {% endif %}
             </div>
         {% endif %}
