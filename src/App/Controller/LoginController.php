@@ -18,7 +18,7 @@ class LoginController extends Controller
 
     public function loginForm(): void
     {
-        $this->renderLoginForm(false);
+        $this->renderLoginForm(MessageType::None);
     }
 
     public function login(array $payload): void
@@ -30,7 +30,7 @@ class LoginController extends Controller
 
 //        user does not exist
         if (is_null($id)) {
-            $this->renderLoginForm(true);
+            $this->renderLoginForm(MessageType::LoginFailed);
             return;
         }
 
@@ -44,21 +44,28 @@ class LoginController extends Controller
             header('Location: profile');
         } else {
 //            password does not match username
-            $this->renderLoginForm(true);
+            $this->renderLoginForm(MessageType::LoginFailed);
         }
     }
 
-    private function renderLoginForm(bool $withErrorMessage): void
+    private function renderLoginForm(MessageType $type): void
     {
-        $message = '';
-        if ($withErrorMessage) {
-            $message = 'The username or password is incorrect.';
-        }
+        $message = match ($type){
+            MessageType::None => '',
+            MessageType::LoginFailed => 'The username or password is incorrect.',
+            MessageType::Logout => 'You have been logged out.'
+        };
 
         try {
             echo $this->twig->render('login.html.twig', ['message' => $message]);
         } catch (Error $e) {
             echo $e->getTraceAsString();
         }
+    }
+
+    public function logout(array $payload): void
+    {
+        $this->sessionHandler::destroySession();
+        $this->renderLoginForm(MessageType::Logout);
     }
 }

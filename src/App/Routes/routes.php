@@ -78,5 +78,10 @@ return [
         'path' => '/login',
         'controller' => [CONTROLLER => \Controller\LoginController::class],
         'name' => 'login'
+    ],
+    [
+        'path' => '/logout',
+        'controller' => [CONTROLLER => \Controller\LoginController::class],
+        'name' => 'logout'
     ]
 ];

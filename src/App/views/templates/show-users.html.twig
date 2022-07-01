@@ -50,6 +50,9 @@
                         <input type="hidden" name="username" value="{{ user.username }}">
                         <input type="submit" name="submit" value="Delete">
                     </form>
+                    <form action="/logout" method="post" name="logout">
+                        <input type="submit" name="submit" value="Log out">
+                    </form>
                 {% endif %}
             </div>
         {% endif %}
