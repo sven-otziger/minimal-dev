@@ -55,9 +55,9 @@ return [
 		'name' => 'readUserWhereUsernameLike'
 	],
 	[
-		'path' => '/display/{id}',
+		'path' => '/profile',
 		'controller' => [CONTROLLER => \Controller\UserController::class],
-		'name' => 'display'
+		'name' => 'displayProfile'
 	],
 	[
 		'path' => '/orm',
@@ -68,5 +68,15 @@ return [
 		'path' => '/home',
 		'controller' => [CONTROLLER => \Controller\WebsiteController::class],
 		'name' => 'home'
-	]
+	],
+    [
+        'path' => '/login-form',
+        'controller' => [CONTROLLER => \Controller\LoginController::class],
+        'name' => 'loginForm'
+    ],
+    [
+        'path' => '/login',
+        'controller' => [CONTROLLER => \Controller\LoginController::class],
+        'name' => 'login'
+    ]
 ];

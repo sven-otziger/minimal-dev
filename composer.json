@@ -14,7 +14,8 @@
             "Retro\\Inheritance\\": "src/Retro/Inheritance",
             "Retro\\Serialization\\": "src/Retro/Serialization",
             "Entity\\": "src/App/Entity",
-            "Repository\\": "src/App/Repository"
+            "Repository\\": "src/App/Repository",
+            "Session\\": "src/App/Session"
         }
     },
     "authors": [

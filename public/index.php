@@ -14,6 +14,7 @@ $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
 // session handling einfügen
+session_start();
 
 // get routes from extern file
 $routeSource = require_once __DIR__ . "/../src/App/Routes/routes.php";

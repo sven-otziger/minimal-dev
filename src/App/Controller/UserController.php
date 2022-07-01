@@ -24,44 +24,18 @@ class UserController extends Controller
         parent::__construct($parameters, $arguments);
     }
 
-	/**
-	 * used to display one or all users
-	 * one --> display/id
-	 * all --> display/all
-	 * @param $id
-	 * @return void
-	 */
-	public function display($id): void
+	public function displayProfile(): void
 	{
-		$data = NULL;
-		if ($id == 'all') {
-			try {
-				$data = $this->userRepo->findAllUsers($id);
-			} catch (UserException $e) {
-				echo $e->getMessage();
-			}
-		} else {
-			try {
-				// check if object exists
-				if (!$this->checkUserExistence($id)) {
-					throw new InexistentUserException();
-				}
-				$data = $this->userRepo->findUserWithID($id);
-			} catch (UserException $e) {
-				echo $e->getMessage();
-			}
-		}
+        $this->sessionHandler::handleSession();
 
-		if (!$data) {
-			return;
-		}
+        $activeUser = $this->sessionHandler::getId();
+        $data = $this->userRepo->findUserWithID($activeUser);
 
-		try {
-			echo $this->twig->render('show-users.html.twig', ['userList' => $data]);
-		} catch (Error $e) {
-			echo $e->getTraceasString();
-		}
-
+        try {
+            echo $this->twig->render('show-users.html.twig', ['userList' => $data]);
+        } catch (Error $e) {
+            echo $e->getTraceasString();
+        }
 	}
 
 	public function orm(): void
