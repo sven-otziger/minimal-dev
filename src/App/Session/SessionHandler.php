@@ -52,6 +52,7 @@ class SessionHandler
             exit();
         } else {
             $_SESSION['timestamp'] = time();
+            session_regenerate_id();
         }
     }
 
