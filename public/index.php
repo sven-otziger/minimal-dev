@@ -13,7 +13,7 @@ $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
-// session handling einfügen
+ini_set( 'session.cookie_httponly', 1 );
 session_start();
 
 // get routes from extern file
