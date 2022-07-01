@@ -50,6 +50,8 @@ class SessionHandler
             self::destroySession();
             header('Location: ../../login-form');
             exit();
+        } else {
+            $_SESSION['timestamp'] = time();
         }
     }
 
