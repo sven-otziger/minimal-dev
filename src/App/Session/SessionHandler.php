@@ -38,7 +38,7 @@ class SessionHandler
 
     public static function isSessionExpired(): bool
     {
-        return time() - $_SESSION['timestamp'] > 60 * 60 * 5; // 5min
+        return time() - $_SESSION['timestamp'] > 60 * 5; // 5min
     }
 
     public static function handleSession(): void
