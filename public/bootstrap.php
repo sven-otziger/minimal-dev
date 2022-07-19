@@ -26,19 +26,4 @@ $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
 
 
 // obtaining the entity manager
-$em = EntityManager::create($conn, $config);
-
-
-// create
-$p1 = new Product();
-$em->persist($p1);
-
-// find
-echo Product::class;
-$productRepo = $em->getRepository(Product::class);
-dump($productRepo);
-echo "\n\n" . get_class($productRepo);
-//$products = $productRepo->findAll();
-
-
-dump($em);
+return EntityManager::create($conn, $config);

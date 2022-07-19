@@ -1,6 +1,16 @@
 <?php
 
-// cli-config.php
-require_once "public/index.php";
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 
-return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
+require __DIR__ . '/vendor/autoload.php';
+$em = require_once "public/bootstrap.php";
+
+$commands = [
+    // eigene Commands hinzufügen möglich
+];
+
+ConsoleRunner::run(
+    new SingleManagerProvider($em),
+    $commands
+);

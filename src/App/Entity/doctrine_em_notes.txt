@@ -1,0 +1,15 @@
+
+// example use case
+// create
+$p1 = new Product();
+$em->persist($p1);
+
+// find
+echo Product::class;
+$productRepo = $em->getRepository(Product::class);
+dump($productRepo);
+echo "\n\n" . get_class($productRepo);
+//$products = $productRepo->findAll();
+
+
+dump($em);
