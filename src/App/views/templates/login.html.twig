@@ -17,20 +17,20 @@
             align-items: center;
         }
 
-        form {
+        .background {
             background-color: rgba(13, 110, 253, 0.25);
             width: 60%;
             line-height: 2rem;
             padding: 2rem;
         }
 
-        form label {
+        form.login-form label {
             display: inline-block;
             width: 100px;
         }
 
-        form input[type="text"],
-        form input[type="password"] {
+        form.login-form input[type="text"],
+        form.login-form input[type="password"] {
             width: 200px;
         }
 
@@ -38,25 +38,38 @@
             text-align: right;
         }
 
+        form.signup-form {
+            font-size: .8rem;
+        }
+
     </style>
 </head>
 <body>
+<div class="background">
+    <form action="/login" method="post" class="login-form">
 
-<form action="/login" method="post">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div class="submit">
+            <input type="submit" value="Log in">
+        </div>
+
+    </form>
 
     <div>
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username">
+        <form action="/create-user-form" method="post" class="signup-form">
+            <label for="submit-new-user">Not yet having an account. Create one here:</label>
+            <input type="submit" id="submit-new-user" value="Create a new account">
+        </form>
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password">
-    </div>
-    <div class="submit">
-        <input type="submit" value="Log in">
-    </div>
+</div>
 
-</form>
 
 <div>
     <p>{{ message }}</p>

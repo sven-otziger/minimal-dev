@@ -17,19 +17,19 @@
             align-items: center;
         }
 
-        form {
+        .background {
             background-color: rgba(13, 110, 253, 0.25);
             width: 60%;
             line-height: 2rem;
             padding: 2rem;
         }
 
-        form label {
+        form.user-creation label {
             display: inline-block;
             width: 100px;
         }
 
-        form input[type="text"] {
+        form.user-creation input[type="text"] {
             width: 200px;
         }
 
@@ -37,44 +37,57 @@
             text-align: right;
         }
 
+        .link-login-form {
+            font-size: .8rem;
+        }
+
     </style>
 </head>
 <body>
+<div class="background">
+    <form action="/createUser" method="post" class="user-creation">
 
-<form action="/createUser" method="post">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="text" id="password" name="password">
+        </div>
+        <div>
+            <label for="age">Age</label>
+            <input type="text" id="age" name="age">
+        </div>
+        <div>
+            <label for="street">Street</label>
+            <input type="text" id="street" name="street">
+        </div>
+        <div>
+            <label for="number">Number</label>
+            <input type="text" id="number" name="number">
+        </div>
+        <div>
+            <label for="zip">ZIP</label>
+            <input type="text" id="zip" name="zip">
+        </div>
+        <div>
+            <label for="city">City</label>
+            <input type="text" id="city" name="city">
+        </div>
+        <div class="submit">
+            <input type="submit" value="Create User">
+        </div>
+
+    </form>
 
     <div>
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username">
+        <form action="/login-form" method="post" class="link-login-form">
+            <label for="link-login">Already having an account. Log in here:</label>
+            <input type="submit" id="link-login" value="Log in">
+        </form>
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="text" id="password" name="password">
-    </div>
-    <div>
-        <label for="age">Age</label>
-        <input type="text" id="age" name="age">
-    </div>
-    <div>
-        <label for="street">Street</label>
-        <input type="text" id="street" name="street">
-    </div>
-    <div>
-        <label for="number">Number</label>
-        <input type="text" id="number" name="number">
-    </div>
-    <div>
-        <label for="zip">ZIP</label>
-        <input type="text" id="zip" name="zip">
-    </div>
-    <div>
-        <label for="city">City</label>
-        <input type="text" id="city" name="city">
-    </div>
-    <div class="submit">
-        <input type="submit" value="Create User">
-    </div>
+</div>
 
-</form>
 </body>
 </html>
