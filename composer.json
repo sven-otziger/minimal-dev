@@ -15,7 +15,9 @@
             "Retro\\Serialization\\": "src/Retro/Serialization",
             "Entity\\": "src/App/Entity",
             "Repository\\": "src/App/Repository",
-            "Session\\": "src/App/Session"
+            "Session\\": "src/App/Session",
+            "Enum\\": "src/App/Enum",
+            "Exception\\": "src/App/Exception"
         }
     },
     "authors": [
