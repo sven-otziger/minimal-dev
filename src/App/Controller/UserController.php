@@ -113,7 +113,7 @@ class UserController extends Controller
 			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
 			header('Location: display/' . $lastId);
 
-		} catch (UserException $e) {
+		} catch (UserException|PasswordException $e) {
 			echo $e->getMessage();
 		}
 	}
