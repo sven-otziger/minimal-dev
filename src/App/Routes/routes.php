@@ -54,7 +54,7 @@ return [
 		'name' => 'updateUser'
 	],
 	[
-		'path' => '/deleteUser',
+		'path' => '/delete-user',
 		'controller' => [CONTROLLER => UserController::class],
 		'name' => 'deleteUser'
 	],
@@ -73,6 +73,16 @@ return [
 		'controller' => [CONTROLLER => UserController::class],
 		'name' => 'orm'
 	],
+    [
+        'path' => 'edit',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'renderEdit'
+    ],
+    [
+        'path' => 'update-user',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'updateUser'
+    ],
 	[
 		'path' => '/home',
 		'controller' => [CONTROLLER => WebsiteController::class],
