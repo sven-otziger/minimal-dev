@@ -45,13 +45,26 @@
                     {% endif %}
                 {% endfor %}
                 {% if userList|length == 1 %}
-                    <form action='/deleteUser' method="post" name="user-deletion">
+                    <form action='/delete-user' method="post" name="user-deletion">
                         <input type="hidden" name="id" value="{{ user.id }}">
                         <input type="hidden" name="username" value="{{ user.username }}">
                         <input type="submit" name="submit" value="Delete">
                     </form>
                     <form action="/logout" method="post" name="logout">
                         <input type="submit" name="submit" value="Log out">
+                    </form>
+                    <form action="/edit" method="post" name="render-edit">
+                        <input type="submit" name="submit" value="Edit">
+
+                        <input type="hidden" name="id" value="{{ user.id }}">
+                        <input type="hidden" name="username" value="{{ user.username }}">
+                        <input type="hidden" name="password" value="{{ user.password }}">
+                        <input type="hidden" name="age" value="{{ user.age }}">
+                        <input type="hidden" name="street" value="{{ user.street }}">
+                        <input type="hidden" name="zip_code" value="{{ user.zip_code }}">
+                        <input type="hidden" name="house_number" value="{{ user.house_number }}">
+                        <input type="hidden" name="city" value="{{ user.city }}">
+
                     </form>
                 {% endif %}
             </div>

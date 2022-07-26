@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <style>
+
+        .user-container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+        }
+
+        .update-user {
+            margin: 25px;
+            width: 400px;
+            background-color: rgba(11, 94, 215, 0.2);
+            padding: 1rem;
+        }
+
+        .update-user label {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 10px;
+        }
+
+        .update-user input[type='text'] {
+            width: 200px;
+        }
+
+    </style>
+</head>
+<body>
+<h3>Edit User</h3>
+
+<div class="user-container">
+
+    <div class="update-user">
+        <form action="/update-user" method="post" name="update-user">
+            <input type="hidden" value="{{ user.id }}" name="id">
+
+            <label for="username">Username</label>
+            <input type="text" value="{{ user.username }}" id="username" name="username">
+            <br>
+
+            <label for="password">Password</label>
+            <input type="text" value="{{ user.password }}" id="password" name="password">
+            <br><br>
+
+            <label for="age">Age</label>
+            <input type="text" value="{{ user.age }}" id="age" name="age">
+            <br><br>
+
+            <label for="street">Street</label>
+            <input type="text" value="{{ user.street }}" id="street" name="street">
+            <br>
+
+            <label for="zip_code">Zip</label>
+            <input type="text" value="{{ user.zip_code }}" id="zip_code" name="zip_code">
+            <br>
+
+            <label for="house_number">House number</label>
+            <input type="text" value="{{ user.house_number }}" id="house_number" name="house_number">
+            <br>
+
+            <label for="city">City</label>
+            <input type="text" value="{{ user.city }}" id="city" name="city">
+            <br>
+
+            <input type="submit" value="Update" name="submit">
+
+        </form>
+
+        <form action="/profile" method="post" name="back">
+
+            <input type="submit" value="Back">
+
+
+        </form>
+    </div>
+
+    <div>
+        <p>{{ message }}</p>
+    </div>
+
+</div>
+
+</body>
+</html>
