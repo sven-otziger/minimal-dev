@@ -106,12 +106,15 @@ class UserController extends Controller
 				throw new InvalidPasswordException();
 			}
 
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
 			// create user
-			$this->userRepo->createUser($username, $password, $age, $street, $number, $zip, $city);
+			$this->userRepo->createUser($username, $hashedPassword, $age, $street, $number, $zip, $city);
 
 			// display the new user:
 			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
-			header('Location: display/' . $lastId);
+            $this->sessionHandler::createSession($lastId);
+			header('Location: profile');
 
 		} catch (UserException|PasswordException $e) {
 			echo $e->getMessage();
