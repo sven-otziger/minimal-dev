@@ -78,10 +78,14 @@ class UserController extends Controller
 		}
 	}
 
-	public function createUserForm(): void
-	{
-		require_once __DIR__ . "/../views/create-user-form.html";
-	}
+	public function createUserForm(string $messsage = null): void
+    {
+        try {
+            echo $this->twig->render('create-user-form.html.twig', ['message' => $messsage]);
+        } catch (Error $e) {
+            echo $e->getTraceAsString();
+        }
+    }
 
 	public function createUser(array $payload): void
 	{
@@ -117,7 +121,7 @@ class UserController extends Controller
 			header('Location: profile');
 
 		} catch (UserException|PasswordException $e) {
-			echo $e->getMessage();
+			$this->createUserForm($e->getMessage());
 		}
 	}
 
