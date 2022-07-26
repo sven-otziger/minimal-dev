@@ -2,8 +2,8 @@
 
 namespace Controller;
 
+use Enum\Attribute;
 use Repository\LoginRepository;
-use Session\SessionHandler;
 use Twig\Error\Error;
 
 class LoginController extends Controller
@@ -34,16 +34,17 @@ class LoginController extends Controller
             return;
         }
 
-        $dbUsername = $this->loginRepo->getUsernameById($id);
-        $dbPassword = $this->loginRepo->getPasswordById($id);
+        $dbUsername = $this->loginRepo->getAttributeById(Attribute::Username, $id);
+        $dbPassword = $this->loginRepo->getAttributeById(Attribute::Password, $id);
+        $userIsDeleted = $this->loginRepo->getAttributeById(Attribute::IsDeleted, $id);
 
-        if ($username === $dbUsername && $password === $dbPassword) {
+        if ($username === $dbUsername && password_verify($password, $dbPassword) && !$userIsDeleted) {
 
             $this->sessionHandler::createSession($id);
 
             header('Location: profile');
         } else {
-//            password does not match username
+//            password does not match username or user is "deleted"
             $this->renderLoginForm(MessageType::LoginFailed);
         }
     }
