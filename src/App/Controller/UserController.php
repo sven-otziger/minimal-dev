@@ -2,9 +2,12 @@
 
 namespace Controller;
 
+use Enum\User;
+
 use Exception\DuplicateUserException;
 use Exception\InexistentUserException;
 use Exception\InvalidPasswordException;
+use Exception\PasswordException;
 use Exception\UserException;
 use Exception\ShortPasswordException;
 use Repository\UserRepository;
@@ -17,6 +20,7 @@ class UserController extends Controller
 {
 	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
 	private UserRepository $userRepo;
+    private string $UPDATE_TEMPLATE = 'update-user.html.twig';
 
     public function __construct(array $parameters, array $arguments)
     {
@@ -114,37 +118,73 @@ class UserController extends Controller
 		}
 	}
 
-	public function updateUser(int $id, string $username, string $password): void
+    public function renderEdit(array $payload): void
+    {
+        try {
+            echo $this->twig->render($this->UPDATE_TEMPLATE, ['user' => $payload]);
+        } catch (Error $e) {
+            echo $e->getTraceasString();
+        }
+    }
+
+	public function updateUser(array $payload): void
 	{
-		try {
-			// check if object exists
-			if (!$this->checkUserExistence($id)) {
-				throw new InexistentUserException();
-			}
-			// check username
-			if ($this->checkOnDuplicatedUsername($username)) {
-				throw new DuplicateUserException();
-			}
+        $id = $payload['id'];
 
-			// check password
-			if (strlen($password) < 8) {
-				throw new ShortPasswordException();
-			} else if (!preg_match($this->regexPassword, $password)) {
-				throw new InvalidPasswordException();
-			}
+        $userFromDb = $this->userRepo->findUserWithID($id)[0];
 
-			// create user
-			$this->userRepo->updateUser($id, $username, $password);
-//		display changes:
-			$data = $this->userRepo->findUserWithID($id);
+        try {
+            if ($userFromDb->username !== $payload['username']) {
+                if ($this->checkOnDuplicatedUsername($payload['username'])) {
+                    throw new DuplicateUserException();
+                }
+                $this->userRepo->updateAttributeById($id, User::username, $payload['username']);
+            }
 
-			echo "<pre>";
-			var_dump($data);
-			echo "</pre>";
-		} catch (UserException $e) {
-			echo $e->getMessage();
-		}
+            if ($userFromDb->password !== $payload['password']) {
+                if (strlen($payload['password']) < 8) {
+                    throw new ShortPasswordException();
+                } else if (!preg_match($this->regexPassword, $payload['password'])) {
+                    throw new InvalidPasswordException();
+                }
+                $this->userRepo->updateAttributeById($id, User::password, $payload['password']);
+            }
 
+            if ($userFromDb->age !== $payload['age']) {
+                $this->userRepo->updateAttributeById($id, User::age, $payload['age']);
+            }
+            if ($userFromDb->street !== $payload['street']) {
+                $this->userRepo->updateAttributeById($id, User::street, $payload['street']);
+            }
+            if ($userFromDb->house_number !== $payload['house_number']) {
+                $this->userRepo->updateAttributeById($id, User::houseNumber, $payload['house_number']);
+            }
+            if ($userFromDb->city !== $payload['city']) {
+                $this->userRepo->updateAttributeById($id, User::city, $payload['city']);
+            }
+            if ($userFromDb->zip_code !== $payload['zip_code']) {
+                $this->userRepo->updateAttributeById($id, User::zip, $payload['zip_code']);
+            }
+            header('Location: profile');
+        } catch
+        (DuplicateUserException $e) {
+            $message =  $e->getMessage();
+            try {
+                $payload['username'] = $userFromDb->username;
+                echo $this->twig->render($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
+            }catch (Error $e){
+                echo $e->getTraceAsString();
+            }
+
+        }catch (PasswordException $e){
+            $message = $e->getMessage();
+            try {
+                $payload['password'] = $userFromDb->password;
+                echo $this->twig->render($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
+            }catch (Error $e){
+                echo $e->getTraceAsString();
+            }
+        }
 	}
 
 	public function deleteUser(array $payload): void

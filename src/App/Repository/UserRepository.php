@@ -3,6 +3,7 @@
 namespace Repository;
 
 use Service\DatabaseService;
+use Enum\User;
 
 class UserRepository
 {
@@ -46,6 +47,12 @@ class UserRepository
 		DatabaseService::getInstance()->execute("UPDATE user SET username = :username, password = :password WHERE id = :id",
 			["id" => $id, "username" => $username, "password" => $password]);
 	}
+
+    public function updateAttributeById(int $id, User $attribute, string $value):void
+    {
+        DatabaseService::getInstance()->execute("UPDATE user SET $attribute->value = :value WHERE id = :id",
+            ["id" => $id, "value" => $value]);
+    }
 
 	public function deleteUser(int $id): void
 	{
