@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Enum\Attribute;
+use Enum\LoginMessage;
 use Repository\LoginRepository;
 use Twig\Error\Error;
 
@@ -18,7 +19,7 @@ class LoginController extends Controller
 
     public function loginForm(): void
     {
-        $this->renderLoginForm(MessageType::None);
+        $this->renderLoginForm(LoginMessage::None);
     }
 
     public function login(array $payload): void
@@ -30,7 +31,7 @@ class LoginController extends Controller
 
 //        user does not exist
         if (is_null($id)) {
-            $this->renderLoginForm(MessageType::LoginFailed);
+            $this->renderLoginForm(LoginMessage::LoginFailed);
             return;
         }
 
@@ -45,20 +46,14 @@ class LoginController extends Controller
             header('Location: profile');
         } else {
 //            password does not match username or user is "deleted"
-            $this->renderLoginForm(MessageType::LoginFailed);
+            $this->renderLoginForm(LoginMessage::LoginFailed);
         }
     }
 
-    private function renderLoginForm(MessageType $type): void
+    private function renderLoginForm(LoginMessage $loginMessage): void
     {
-        $message = match ($type){
-            MessageType::None => '',
-            MessageType::LoginFailed => 'The username or password is incorrect.',
-            MessageType::Logout => 'You have been logged out.'
-        };
-
         try {
-            echo $this->twig->render('login.html.twig', ['message' => $message]);
+            echo $this->twig->render('login.html.twig', ['message' => $loginMessage->value]);
         } catch (Error $e) {
             echo $e->getTraceAsString();
         }
@@ -67,6 +62,6 @@ class LoginController extends Controller
     public function logout(array $payload): void
     {
         $this->sessionHandler::destroySession();
-        $this->renderLoginForm(MessageType::Logout);
+        $this->renderLoginForm(LoginMessage::Logout);
     }
 }
