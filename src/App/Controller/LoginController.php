@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use Enum\Attribute;
+use Enum\RequiredAttribute;
 use Enum\LoginMessage;
 use Repository\LoginRepository;
 use Twig\Error\Error;
@@ -35,9 +35,9 @@ class LoginController extends Controller
             return;
         }
 
-        $dbUsername = $this->loginRepo->getAttributeById(Attribute::Username, $id);
-        $dbPassword = $this->loginRepo->getAttributeById(Attribute::Password, $id);
-        $userIsDeleted = $this->loginRepo->getAttributeById(Attribute::IsDeleted, $id);
+        $dbUsername = $this->loginRepo->getAttributeById(RequiredAttribute::Username, $id);
+        $dbPassword = $this->loginRepo->getAttributeById(RequiredAttribute::Password, $id);
+        $userIsDeleted = $this->loginRepo->getAttributeById(RequiredAttribute::IsDeleted, $id);
 
         if ($username === $dbUsername && password_verify($password, $dbPassword) && !$userIsDeleted) {
 

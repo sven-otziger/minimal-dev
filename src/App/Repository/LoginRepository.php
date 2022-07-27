@@ -3,7 +3,7 @@
 namespace Repository;
 
 
-use Enum\Attribute;
+use Enum\RequiredAttribute;
 use Service\DatabaseService;
 
 class LoginRepository
@@ -46,24 +46,16 @@ class LoginRepository
         }
     }
 
-    public function getAttributeById(Attribute $attribute, int $id): ?string
+    public function getAttributeById(RequiredAttribute $requiredAttribute, int $id): ?string
     {
-        $sql = match ($attribute) {
-            Attribute::Username => "SELECT username FROM user WHERE id = :id",
-            Attribute::Password => "SELECT password FROM user WHERE id = :id",
-            Attribute::IsDeleted => "SELECT deleted FROM user WHERE id = :id"
-        };
-        $result = DatabaseService::getInstance()->execute(
-            $sql,
-            ['id' => $id]
-        );
+        $result = DatabaseService::getInstance()->execute($requiredAttribute->value, ['id' => $id]);
         if (empty($result)) {
             return null;
         } else {
-            return match ($attribute) {
-                Attribute::Username => $result[0]->username,
-                Attribute::Password => $result[0]->password,
-                Attribute::IsDeleted => $result[0]->deleted
+            return match ($requiredAttribute) {
+                RequiredAttribute::Username => $result[0]->username,
+                RequiredAttribute::Password => $result[0]->password,
+                RequiredAttribute::IsDeleted => $result[0]->deleted
             };
         }
     }
