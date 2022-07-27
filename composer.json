@@ -17,7 +17,8 @@
             "Repository\\": "src/App/Repository",
             "Session\\": "src/App/Session",
             "Enum\\": "src/App/Enum",
-            "Exception\\": "src/App/Exception"
+            "Exception\\": "src/App/Exception",
+            "Twig\\": "src/App/Twig"
         }
     },
     "authors": [

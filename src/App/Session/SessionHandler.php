@@ -2,12 +2,20 @@
 
 namespace Session;
 
+use Enum\LoginMessage;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use Twig\TwigHandler;
+
 class SessionHandler
 {
     private static ?SessionHandler $sessionHandler = null;
+    private static TwigHandler $twigHandler;
 
     public function __construct()
     {
+        self::$twigHandler  = TwigHandler::getTwigHandler();
     }
 
     public static function getSessionHandler(): SessionHandler
@@ -38,17 +46,31 @@ class SessionHandler
 
     public static function isSessionExpired(): bool
     {
-        return time() - $_SESSION['timestamp'] > 60 * 5; // 5min
+        return time() - $_SESSION['timestamp'] > 5; // 5min
     }
 
     public static function handleSession(): void
     {
-        if (!self::isLoggedIn()) {
-            header('Location: ../../login-form');
+        if (self::isLoggedIn() === null) {
+            try {
+                self::$twigHandler::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::NotLoggedIn->value]);
+            } catch (LoaderError|RuntimeError|SyntaxError $e) {
+                echo $e->getTraceAsString();
+            }
+
+//            echo $this->twig->render('login.html.twig', ['message' => $loginMessage->value]);
+//            echo TwigHandler::getTwigHandler()::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::NotLoggedIn->value]);
+//            header('Location: ../../login-form');
             exit();
         } else if (self::isSessionExpired()) {
             self::destroySession();
-            header('Location: ../../login-form');
+            try {
+                self::$twigHandler::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::Inactivity->value]);
+            } catch (LoaderError|RuntimeError|SyntaxError $e) {
+                echo $e->getTraceAsString();
+            }
+//            echo TwigHandler::getTwigHandler()::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::NotLoggedIn->value]);
+//            header('Location: ../../login-form');
             exit();
         } else {
             $_SESSION['timestamp'] = time();

@@ -14,6 +14,7 @@ use Repository\UserRepository;
 use Service\DatabaseService;
 use Test\ORM;
 use Twig\Error\Error;
+use Twig\TwigHandler;
 
 
 class UserController extends Controller
@@ -127,6 +128,7 @@ class UserController extends Controller
 
     public function renderEdit(array $payload): void
     {
+        $this->sessionHandler::handleSession();
         try {
             echo $this->twig->render($this->UPDATE_TEMPLATE, ['user' => $payload]);
         } catch (Error $e) {
@@ -136,6 +138,8 @@ class UserController extends Controller
 
 	public function updateUser(array $payload): void
 	{
+        $this->sessionHandler::handleSession();
+
         $id = $payload['id'];
 
         $userFromDb = $this->userRepo->findUserWithID($id)[0];
