@@ -38,12 +38,12 @@ class User
     private string $street;
 
     /**
-     * @ORM\Column(type="string", length=7)
+     * @ORM\Column(type="string", length=7, name="house_number")
      */
     private string $houseNumber;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15, name="zip_code")
      */
     private int $zipCode;
 

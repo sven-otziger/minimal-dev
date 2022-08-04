@@ -10,7 +10,6 @@ $proxyDir = null;
 $cache = null;
 $useSimpleAnnotationReader = false;
 $config = Setup::createAnnotationMetadataConfiguration(array(dirname(__DIR__) . "/src"), $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
-//$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "\..\src"), $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
 
 // or if you prefer yaml or XML
 // $config = Setup::createXMLMetadataConfiguration(array(__DIR__."/config/xml"), $isDevMode);
@@ -18,9 +17,9 @@ $config = Setup::createAnnotationMetadataConfiguration(array(dirname(__DIR__) . 
 
 // database configuration parameters
 $connectionParams = [
-	'dbname' => 'doctrine',
-	'user' => 'root',
-	'password' => 'root',
+	'dbname' => $_ENV['MARIADB_DATABASE'],
+	'user' => $_ENV['MARIADB_USER'],
+	'password' => $_ENV['MARIADB_PASSWORD'],
 	'host' => 'mariadb',
 	'driver' => 'pdo_mysql',
 ];
