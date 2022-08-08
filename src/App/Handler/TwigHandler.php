@@ -1,6 +1,6 @@
 <?php
 
-namespace Twig;
+namespace Handler;
 
 use Twig\Loader\FilesystemLoader;
 
