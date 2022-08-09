@@ -20,19 +20,6 @@ class LoginRepository
         }
     }
 
-    public function getUsernameById(int $id): ?string
-    {
-        $dataArray = DatabaseService::getInstance()->execute(
-            "SELECT username FROM user WHERE id = :id", ['id' => $id]
-        );
-
-        if (empty($dataArray)) {
-            return null;
-        } else {
-            return $dataArray[0]->username;
-        }
-    }
-
     public function getPasswordById(int $id): ?string
     {
         $dataArray = DatabaseService::getInstance()->execute(

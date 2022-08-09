@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Handler\SessionHandler;
 use Repository\UserRepository;
 
 class HomeController extends Controller
@@ -17,7 +18,7 @@ class HomeController extends Controller
     public function home():void
     {
         $id = $_SESSION['id'];
-        $username = $this->userRepo->getUsernameById($id);
+        $username = SessionHandler::getUsername();
         $permissions = $this->permissionHandler->getPermissions($id);
 
         $data = [
