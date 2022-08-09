@@ -13,7 +13,6 @@ use Exception\UserException;
 use Exception\ShortPasswordException;
 use Repository\UserRepository;
 use Service\DatabaseService;
-use Test\ORM;
 use Twig\Error\Error;
 
 
@@ -38,26 +37,6 @@ class UserController extends Controller
 
         $this->twigHandler::renderTwigTemplate('show-user.html.twig', ['user' => $userData]);
 	}
-
-	public function orm(): void
-	{
-		$test = new ORM(3);
-
-		echo "<pre>ORM Object: ";
-		var_dump($test);
-		echo "</pre>";
-	}
-
-	public function readUsers(): void
-	{
-		$data = $this->userRepo->findAllUsers();
-
-		echo "<pre>";
-		var_dump($data);
-		echo "</pre>";
-		echo "<hr>";
-	}
-
 
 	public function renderSignupForm(string $messsage = null): void
     {
@@ -178,15 +157,6 @@ class UserController extends Controller
 		} catch (UserException $e) {
 			echo $e->getMessage();
 		}
-	}
-
-	public function readUserWhereUsernameLike($search): void
-	{
-		$data = $this->userRepo->findUserWhereUsernameLike($search);
-
-		echo "<pre>";
-		var_dump($data);
-		echo "</pre>";
 	}
 
 	/**
