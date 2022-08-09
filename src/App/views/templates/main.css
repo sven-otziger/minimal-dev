@@ -19,3 +19,22 @@ span.profile-tabulator {
 .temp-height {
     height: 500px;
 }
+
+/*   ### Login Form ###   */
+.login form.login-form label {
+    display: inline-block;
+    width: 100px;
+}
+
+.login form.login-form input[type="text"],
+.login form.login-form input[type="password"] {
+    width: 200px;
+}
+
+.login div.submit {
+    text-align: right;
+}
+
+.login form.signup-form {
+    font-size: .9rem;
+}
