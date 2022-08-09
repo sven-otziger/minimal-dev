@@ -56,7 +56,7 @@ return [
         'name' => 'home'
     ],
     [
-        'path' => '/user',
+        'path' => '/profile',
         'controller' => [CONTROLLER => UserController::class],
         'name' => 'displayProfile'
     ],
@@ -74,6 +74,11 @@ return [
         'path' => '/edit',
         'controller' => [CONTROLLER => UserController::class],
         'name' => 'renderUpdateForm'
+    ],
+    [
+        'path' => '/update',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'updateUser'
     ],
     [
         'path' => '/delete',
