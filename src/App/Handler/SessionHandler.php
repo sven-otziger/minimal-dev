@@ -26,16 +26,23 @@ class SessionHandler
         return self::$sessionHandler;
     }
 
-    public static function createSession(int $id): void
+    public static function createSession(int $id, string $username): void
     {
         $_SESSION['id'] = $id;
         $_SESSION['timestamp'] = time();
+        $_SESSION['username'] = $username;
+
+//        echo "<pre>";
+//        var_dump($_SESSION);
+//        echo "</pre>";
+//        die();
     }
 
     public static function destroySession(): void
     {
         $_SESSION['id'] = null;
         $_SESSION['timestamp'] = null;
+        $_SESSION['username'] = null;
         session_destroy();
     }
 
@@ -81,6 +88,11 @@ class SessionHandler
     public static function getId(): int
     {
         return $_SESSION['id'];
+    }
+
+    public static function getUsername(): string
+    {
+        return $_SESSION['username'];
     }
 
 }

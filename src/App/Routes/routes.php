@@ -61,6 +61,11 @@ return [
         'name' => 'displayProfile'
     ],
     [
+        'path' => '/overview',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'displayAllProfiles'
+    ],
+    [
         'path' => '/signup',
         'controller' => [CONTROLLER => UserController::class],
         'name' => 'renderSignupForm'

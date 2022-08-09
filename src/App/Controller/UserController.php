@@ -18,8 +18,8 @@ use Twig\Error\Error;
 
 class UserController extends Controller
 {
-	private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
-	private UserRepository $userRepo;
+    private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
+    private UserRepository $userRepo;
     private string $UPDATE_TEMPLATE = 'update-user.html.twig';
 
     public function __construct(array $parameters, array $arguments)
@@ -28,17 +28,28 @@ class UserController extends Controller
         parent::__construct($parameters, $arguments);
     }
 
-	public function displayProfile(): void
-	{
+    public function displayProfile(): void
+    {
         $this->sessionHandler::handleSession();
 
         $activeUser = $this->sessionHandler::getId();
         $userData = $this->userRepo->getUserById($activeUser);
 
         $this->twigHandler::renderTwigTemplate('show-user.html.twig', ['user' => $userData]);
-	}
+    }
 
-	public function renderSignupForm(string $messsage = null): void
+    public function displayAllProfiles(): void
+    {
+        $users = $this->userRepo->getAllUsersToDisplay();
+//        echo "<pre>";
+//        var_dump($users);
+//        echo "</pre>";
+//        die();
+        $this->twigHandler::renderTwigTemplate('show-all-users.html.twig',
+            ['users' => $users, 'currentUser' => $this->sessionHandler::getUsername()]);
+    }
+
+    public function renderSignupForm(string $messsage = null): void
     {
         try {
             $this->twigHandler::renderTwigTemplate('create-user-form.html.twig', ['message' => $messsage]);
@@ -47,43 +58,43 @@ class UserController extends Controller
         }
     }
 
-	public function createUser(array $payload): void
-	{
-		$username = $payload['username'];
-		$password = $payload['password'];
-		$age = $payload['age'];
-		$street = $payload['street'];
-		$number = $payload['number'];
-		$zip = $payload['zip'];
-		$city = $payload['city'];
+    public function createUser(array $payload): void
+    {
+        $username = $payload['username'];
+        $password = $payload['password'];
+        $age = $payload['age'];
+        $street = $payload['street'];
+        $number = $payload['number'];
+        $zip = $payload['zip'];
+        $city = $payload['city'];
 
-		try {
-			// check username
-			if ($this->checkOnDuplicatedUsername($username)) {
-				throw new DuplicateUserException();
-			}
+        try {
+            // check username
+            if ($this->checkOnDuplicatedUsername($username)) {
+                throw new DuplicateUserException();
+            }
 
-			// check password
-			if (strlen($password) < 8) {
-				throw new ShortPasswordException();
-			} else if (!preg_match($this->regexPassword, $password)) {
-				throw new InvalidPasswordException();
-			}
+            // check password
+            if (strlen($password) < 8) {
+                throw new ShortPasswordException();
+            } else if (!preg_match($this->regexPassword, $password)) {
+                throw new InvalidPasswordException();
+            }
 
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-			// create user
-			$this->userRepo->createUser($username, $hashedPassword, $age, $street, $number, $zip, $city);
+            // create user
+            $this->userRepo->createUser($username, $hashedPassword, $age, $street, $number, $zip, $city);
 
-			// display the new user:
-			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
-            $this->sessionHandler::createSession($lastId);
-			header('Location: home');
+            // display the new user:
+            $lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
+            $this->sessionHandler::createSession($lastId, $username);
+            header('Location: home');
 
-		} catch (UserException|PasswordException $e) {
-			$this->renderSignupForm($e->getMessage());
-		}
-	}
+        } catch (UserException|PasswordException $e) {
+            $this->renderSignupForm($e->getMessage());
+        }
+    }
 
     public function renderUpdateForm(array $payload): void
     {
@@ -91,8 +102,8 @@ class UserController extends Controller
         $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload]);
     }
 
-	public function updateUser(array $payload): void
-	{
+    public function updateUser(array $payload): void
+    {
         $this->sessionHandler::handleSession();
 
         $id = $payload['id'];
@@ -138,50 +149,50 @@ class UserController extends Controller
             $payload['username'] = $userFromDb->username;
             $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
 
-        }catch (PasswordException $e){
+        } catch (PasswordException $e) {
             $payload['password'] = $userFromDb->password;
             $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
         }
-	}
+    }
 
-	public function deleteUser(array $payload): void
-	{
+    public function deleteUser(array $payload): void
+    {
         $id = $payload['id'];
 
-		try {
-			if (!$this->checkUserExistence($id)) {
-				throw new InexistentUserException();
-			}
-			$this->userRepo->deleteUser($id);
+        try {
+            if (!$this->checkUserExistence($id)) {
+                throw new InexistentUserException();
+            }
+            $this->userRepo->deleteUser($id);
             $this->twigHandler::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::Deleted->value]);
-		} catch (UserException $e) {
-			echo $e->getMessage();
-		}
-	}
+        } catch (UserException $e) {
+            echo $e->getMessage();
+        }
+    }
 
-	/**
-	 * @param String $username
-	 * @return bool true if the username from the URL matches with an existing one
-	 **/
-	private function checkOnDuplicatedUsername(string $username): bool
-	{
-		$dataUsers = $this->userRepo->findAllUsers();
+    /**
+     * @param String $username
+     * @return bool true if the username from the URL matches with an existing one
+     **/
+    private function checkOnDuplicatedUsername(string $username): bool
+    {
+        $dataUsers = $this->userRepo->findAllUsers();
 
-		foreach ($dataUsers as $user) {
-			if ($username == $user->username) {
-				return true;
-			}
-		}
-		return false;
-	}
+        foreach ($dataUsers as $user) {
+            if ($username == $user->username) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * @param int $id
-	 * @return bool true if the user does exist
-	 */
-	private function checkUserExistence(int $id): bool
-	{
-		$objectToEdit = $this->userRepo->getUserById($id);
+    /**
+     * @param int $id
+     * @return bool true if the user does exist
+     */
+    private function checkUserExistence(int $id): bool
+    {
+        $objectToEdit = $this->userRepo->getUserById($id);
         return $objectToEdit !== null;
-	}
+    }
 }

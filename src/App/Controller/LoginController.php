@@ -46,7 +46,7 @@ class LoginController extends Controller
 
         if ($username === $dbUsername && password_verify($password, $dbPassword) && !$userIsDeleted) {
 
-            $this->sessionHandler::createSession($id);
+            $this->sessionHandler::createSession($id, $username);
 
             header('Location: home');
         } else {

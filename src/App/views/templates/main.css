@@ -17,7 +17,7 @@ span.profile-tabulator {
 }
 
 .temp-height {
-    height: 500px;
+    min-height: 500px;
 }
 
 /*   ### Login Form ###   */
