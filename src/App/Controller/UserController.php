@@ -134,7 +134,8 @@ class UserController extends Controller
                 } else if (!preg_match($this->regexPassword, $payload['password'])) {
                     throw new InvalidPasswordException();
                 }
-                $this->userRepo->updateAttributeById($id, User::password, $payload['password']);
+                $hashedPassword = password_hash($payload['password'], PASSWORD_BCRYPT);
+                $this->userRepo->updateAttributeById($id, User::password, $hashedPassword);
             }
 
             if ($userFromDb->age !== $payload['age']) {
@@ -155,14 +156,12 @@ class UserController extends Controller
             header('Location: profile');
         } catch
         (DuplicateUserException $e) {
-            $message =  $e->getMessage();
             $payload['username'] = $userFromDb->username;
-            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
+            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
 
         }catch (PasswordException $e){
-            $message = $e->getMessage();
             $payload['password'] = $userFromDb->password;
-            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
+            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
         }
 	}
 
