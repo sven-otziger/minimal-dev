@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Profile</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>{{ source('main.css') }}</style>
+</head>
+<body>
+
+{{ include('_navbar.html.twig', {username: user.username}) }}
+
+<div class="container">
+    <div class="row mt-5 temp-height">
+        <div class="col p-5 temp-bg">
+
+            <p class="h4 mb-4">{{ user.username }}</p>
+            {% set array = {
+                ('Age'): user.age,
+                ('Street'): user.street,
+                ('Number'): user.house_number,
+                ('ZIP'): user.zip_code,
+                ('City'): user.city
+            } %}
+            {% for key, value in array %}
+                {% if value != '' or value != 0 %}
+                    <p><span class="profile-tabulator">{{ key }}</span>{{ value }}</p>
+                {% endif %}
+            {% endfor %}
+
+            <form action="/edit" method="post" name="render-edit" class="mt-5">
+                <input type="submit" name="submit" value="Edit">
+
+                <input type="hidden" name="id" value="{{ user.id }}">
+                <input type="hidden" name="username" value="{{ user.username }}">
+                <input type="hidden" name="password" value="{{ user.password }}">
+                <input type="hidden" name="age" value="{{ user.age }}">
+                <input type="hidden" name="street" value="{{ user.street }}">
+                <input type="hidden" name="zip_code" value="{{ user.zip_code }}">
+                <input type="hidden" name="house_number" value="{{ user.house_number }}">
+                <input type="hidden" name="city" value="{{ user.city }}">
+            </form>
+
+            <form action='/delete-user' method="post" name="user-deletion" class="mt-2">
+                <input type="hidden" name="id" value="{{ user.id }}">
+                <input type="hidden" name="username" value="{{ user.username }}">
+                <input type="submit" name="submit" value="Delete">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://kit.fontawesome.com/a41dcf7e67.js" crossorigin="anonymous"></script>
+</div>
+
+</body>
+</html>

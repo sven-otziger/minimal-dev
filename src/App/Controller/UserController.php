@@ -33,9 +33,9 @@ class UserController extends Controller
         $this->sessionHandler::handleSession();
 
         $activeUser = $this->sessionHandler::getId();
-        $data = $this->userRepo->findUserWithID($activeUser);
+        $userData = $this->userRepo->getUserById($activeUser);
 
-        $this->twigHandler::renderTwigTemplate('show-users.html.twig', ['userList' => $data]);
+        $this->twigHandler::renderTwigTemplate('show-user.html.twig', ['user' => $userData]);
 	}
 
 	public function orm(): void
@@ -57,22 +57,6 @@ class UserController extends Controller
 		echo "<hr>";
 	}
 
-	public function readUser(int $id): void
-	{
-		try {
-			// check if object exists
-			if (!$this->checkUserExistence($id)) {
-				throw new InexistentUserException();
-			}
-			$data = $this->userRepo->findUserWithID($id);
-
-			echo "<pre>";
-			var_dump($data);
-			echo "</pre>";
-		} catch (UserException $e) {
-			echo $e->getMessage();
-		}
-	}
 
 	public function renderSignupForm(string $messsage = null): void
     {
@@ -121,7 +105,7 @@ class UserController extends Controller
 		}
 	}
 
-    public function renderEdit(array $payload): void
+    public function renderUpdateForm(array $payload): void
     {
         $this->sessionHandler::handleSession();
         $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload]);
@@ -133,7 +117,7 @@ class UserController extends Controller
 
         $id = $payload['id'];
 
-        $userFromDb = $this->userRepo->findUserWithID($id)[0];
+        $userFromDb = $this->userRepo->getUserById($id);
 
         try {
             if ($userFromDb->username !== $payload['username']) {
@@ -228,11 +212,7 @@ class UserController extends Controller
 	 */
 	private function checkUserExistence(int $id): bool
 	{
-		$objectToEdit = $this->userRepo->findUserWithID($id);
-
-		if (count($objectToEdit) === 0) {
-			return false;
-		}
-		return true;
+		$objectToEdit = $this->userRepo->getUserById($id);
+        return $objectToEdit !== null;
 	}
 }

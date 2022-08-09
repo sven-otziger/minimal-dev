@@ -28,9 +28,10 @@ class UserRepository
 		return DatabaseService::getInstance()->execute("SELECT * FROM user", []);
 	}
 
-	public function findUserWithID(int $id): array
+	public function getUserById(int $id): ?\stdClass
 	{
-		return DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
+		$data = DatabaseService::getInstance()->execute("SELECT * FROM user WHERE id = :id", ["id" => $id]);
+        return count($data) === 1 ? $data[0] : null;
 	}
 
 	public function createUser(string $username, string $password, int $age, string $street, string $number, string $zip, string $city): void
