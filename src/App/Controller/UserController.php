@@ -168,7 +168,6 @@ class UserController extends Controller
 	public function deleteUser(array $payload): void
 	{
         $id = $payload['id'];
-        $username = $payload['username'];
 
 		try {
 			if (!$this->checkUserExistence($id)) {
