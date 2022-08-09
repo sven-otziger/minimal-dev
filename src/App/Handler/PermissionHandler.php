@@ -11,7 +11,7 @@ class PermissionHandler
 
     }
 
-    public function getPermissionHandler(): PermissionHandler
+    public static function getPermissionHandler(): PermissionHandler
     {
         if (self::$permissionHandler === null) {
             self::$permissionHandler = new PermissionHandler();

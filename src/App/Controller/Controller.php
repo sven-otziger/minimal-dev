@@ -2,26 +2,23 @@
 
 namespace Controller;
 
-use Handler\SessionHandler;
 use Twig\Environment;
+use Handler\TwigHandler;
+use Handler\SessionHandler;
+use Handler\PermissionHandler;
 use Twig\Loader\FilesystemLoader;
 
 class Controller
 {
-    protected Environment $twig;
+    protected TwigHandler $twigHandler;
     protected SessionHandler $sessionHandler;
+    protected PermissionHandler $permissionHandler;
 
     public function __construct(array $parameters, array $arguments)
     {
+        $this->twigHandler = TwigHandler::getTwigHandler();
         $this->sessionHandler = SessionHandler::getSessionHandler();
-
-        $twigLoader = new FilesystemLoader(dirname(__DIR__) . '/views/templates/');
-
-//		with cache
-//		$this->twig = new Environment($twigLoader, ['cache' => dirname(__DIR__, 3) . '/cache']);
-
-//		without cache
-        $this->twig = new Environment($twigLoader, ['cache' => false]);
+        $this->permissionHandler = PermissionHandler::getPermissionHandler();
 
         // function call
         call_user_func_array(array($this, $parameters['_route']), $arguments);
