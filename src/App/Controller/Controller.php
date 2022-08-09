@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use Session\SessionHandler;
+use Handler\SessionHandler;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 

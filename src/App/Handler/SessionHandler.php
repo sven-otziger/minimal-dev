@@ -1,12 +1,12 @@
 <?php
 
-namespace Session;
+namespace Handler;
 
 use Enum\LoginMessage;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Twig\TwigHandler;
+use Handler\TwigHandler;
 
 class SessionHandler
 {

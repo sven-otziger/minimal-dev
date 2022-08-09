@@ -14,7 +14,7 @@ use Repository\UserRepository;
 use Service\DatabaseService;
 use Test\ORM;
 use Twig\Error\Error;
-use Twig\TwigHandler;
+use Handler\TwigHandler;
 
 
 class UserController extends Controller

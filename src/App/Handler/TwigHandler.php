@@ -2,6 +2,8 @@
 
 namespace Handler;
 
+use Twig\Environment;
+use Twig\Error\Error;
 use Twig\Loader\FilesystemLoader;
 
 class TwigHandler
@@ -28,14 +30,13 @@ class TwigHandler
         return self::$twigHandler;
     }
 
-    /**
-     * @throws Error\RuntimeError
-     * @throws Error\SyntaxError
-     * @throws Error\LoaderError
-     */
     public static function renderTwigTemplate(string $template, array $payload): void
     {
-        echo self::$twig->render($template, $payload);
+        try {
+            echo self::$twig->render($template, $payload);
+        }catch (Error $e){
+            echo $e->getMessage();
+        }
     }
 }
 
