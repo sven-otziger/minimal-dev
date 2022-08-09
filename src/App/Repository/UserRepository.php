@@ -16,6 +16,12 @@ class UserRepository
 	SELECT * FROM user WHERE username LIKE :search
 
 	*/
+    public function getUsernameById($id): ?string
+    {
+        $data = DatabaseService::getInstance()->execute("SELECT username FROM user WHERE id = :id", ['id' => $id]);
+        return (count($data) === 1) ? $data[0]->username : null;
+    }
+
 
 	public function findAllUsers(): array
 	{

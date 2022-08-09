@@ -14,7 +14,6 @@ use Repository\UserRepository;
 use Service\DatabaseService;
 use Test\ORM;
 use Twig\Error\Error;
-use Handler\TwigHandler;
 
 
 class UserController extends Controller
@@ -36,11 +35,7 @@ class UserController extends Controller
         $activeUser = $this->sessionHandler::getId();
         $data = $this->userRepo->findUserWithID($activeUser);
 
-        try {
-            echo $this->twig->render('show-users.html.twig', ['userList' => $data]);
-        } catch (Error $e) {
-            echo $e->getTraceasString();
-        }
+        $this->twigHandler::renderTwigTemplate('show-users.html.twig', ['userList' => $data]);
 	}
 
 	public function orm(): void
@@ -79,10 +74,10 @@ class UserController extends Controller
 		}
 	}
 
-	public function createUserForm(string $messsage = null): void
+	public function renderSignupForm(string $messsage = null): void
     {
         try {
-            echo $this->twig->render('create-user-form.html.twig', ['message' => $messsage]);
+            $this->twigHandler::renderTwigTemplate('create-user-form.html.twig', ['message' => $messsage]);
         } catch (Error $e) {
             echo $e->getTraceAsString();
         }
@@ -119,21 +114,17 @@ class UserController extends Controller
 			// display the new user:
 			$lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
             $this->sessionHandler::createSession($lastId);
-			header('Location: profile');
+			header('Location: home');
 
 		} catch (UserException|PasswordException $e) {
-			$this->createUserForm($e->getMessage());
+			$this->renderSignupForm($e->getMessage());
 		}
 	}
 
     public function renderEdit(array $payload): void
     {
         $this->sessionHandler::handleSession();
-        try {
-            echo $this->twig->render($this->UPDATE_TEMPLATE, ['user' => $payload]);
-        } catch (Error $e) {
-            echo $e->getTraceasString();
-        }
+        $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload]);
     }
 
 	public function updateUser(array $payload): void
@@ -180,21 +171,13 @@ class UserController extends Controller
         } catch
         (DuplicateUserException $e) {
             $message =  $e->getMessage();
-            try {
-                $payload['username'] = $userFromDb->username;
-                echo $this->twig->render($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
-            }catch (Error $e){
-                echo $e->getTraceAsString();
-            }
+            $payload['username'] = $userFromDb->username;
+            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
 
         }catch (PasswordException $e){
             $message = $e->getMessage();
-            try {
-                $payload['password'] = $userFromDb->password;
-                echo $this->twig->render($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
-            }catch (Error $e){
-                echo $e->getTraceAsString();
-            }
+            $payload['password'] = $userFromDb->password;
+            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $message]);
         }
 	}
 

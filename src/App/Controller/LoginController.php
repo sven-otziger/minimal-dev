@@ -17,12 +17,17 @@ class LoginController extends Controller
         parent::__construct($parameters, $arguments);
     }
 
-    public function loginForm(): void
+    public function renderLoginForm(LoginMessage $loginMessage = null): void
     {
-        $this->renderLoginForm(LoginMessage::None);
+        $loginMessage = $loginMessage?->value;
+        try {
+            $this->twigHandler->renderTwigTemplate('login.html.twig', ['message' => $loginMessage]);
+        } catch (Error $e) {
+            echo $e->getTraceAsString();
+        }
     }
 
-    public function login(array $payload): void
+    public function loggingIn(array $payload): void
     {
         $username = $payload['username'];
         $password = $payload['password'];
@@ -43,23 +48,16 @@ class LoginController extends Controller
 
             $this->sessionHandler::createSession($id);
 
-            header('Location: profile');
+            header('Location: home');
         } else {
 //            password does not match username or user is "deleted"
             $this->renderLoginForm(LoginMessage::LoginFailed);
         }
     }
 
-    private function renderLoginForm(LoginMessage $loginMessage): void
-    {
-        try {
-            echo $this->twig->render('login.html.twig', ['message' => $loginMessage->value]);
-        } catch (Error $e) {
-            echo $e->getTraceAsString();
-        }
-    }
 
-    public function logout(array $payload): void
+
+    public function logout(): void
     {
         $this->sessionHandler::destroySession();
         $this->renderLoginForm(LoginMessage::Logout);

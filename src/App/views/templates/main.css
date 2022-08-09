@@ -1,0 +1,9 @@
+body {
+    /*background-color: greenyellow; !important;*/
+}
+
+span.tabulator {
+    display: inline-block;
+    width: 12px;
+}
+

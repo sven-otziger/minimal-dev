@@ -2,6 +2,7 @@
 
 use Controller\BlogController;
 use Controller\DemoController;
+use Controller\HomeController;
 use Controller\RetroController;
 use Controller\UserController;
 use Controller\WebsiteController;
@@ -29,78 +30,44 @@ return [
 		'name' => 'serialization'
 	],
 	[
-		'path' => '/readUsers',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'readUsers'
-	],
-	[
-		'path' => '/readUser/{id}',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'readUser'
-	],
-	[
-		'path' => '/createUser',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'createUser'
-	],
-	[
-		'path' => '/create-user-form',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'createUserForm'
-	],
-	[
-		'path' => '/updateUser/{id}/{username}/{password}',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'updateUser'
-	],
-	[
-		'path' => '/delete-user',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'deleteUser'
-	],
-	[
-		'path' => '/readUserWhereUsernameLike/{search}',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'readUserWhereUsernameLike'
-	],
-	[
-		'path' => '/profile',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'displayProfile'
-	],
-	[
-		'path' => '/orm',
-		'controller' => [CONTROLLER => UserController::class],
-		'name' => 'orm'
-	],
-    [
-        'path' => 'edit',
-        'controller' => [CONTROLLER => UserController::class],
-        'name' => 'renderEdit'
-    ],
-    [
-        'path' => 'update-user',
-        'controller' => [CONTROLLER => UserController::class],
-        'name' => 'updateUser'
-    ],
-	[
-		'path' => '/home',
+		'path' => '/harambe',
 		'controller' => [CONTROLLER => WebsiteController::class],
 		'name' => 'home'
 	],
-    [
-        'path' => '/login-form',
-        'controller' => [CONTROLLER => LoginController::class],
-        'name' => 'loginForm'
-    ],
+//    show-application
     [
         'path' => '/login',
         'controller' => [CONTROLLER => LoginController::class],
-        'name' => 'login'
+        'name' => 'renderLoginForm'
+    ],
+    [
+        'path' => '/logging-in',
+        'controller' => [CONTROLLER => LoginController::class],
+        'name' => 'loggingIn'
     ],
     [
         'path' => '/logout',
         'controller' => [CONTROLLER => LoginController::class],
         'name' => 'logout'
-    ]
+    ],
+    [
+        'path' => '/home',
+        'controller' => [CONTROLLER => HomeController::class],
+        'name' => 'home'
+    ],
+    [
+        'path' => '/user',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'displayUser'
+    ],
+    [
+        'path' => '/signup',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'renderSignupForm'
+    ],
+    [
+        'path' => '/createUser',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'createUser'
+    ],
 ];
