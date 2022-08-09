@@ -58,7 +58,7 @@ return [
     [
         'path' => '/user',
         'controller' => [CONTROLLER => UserController::class],
-        'name' => 'displayUser'
+        'name' => 'displayProfile'
     ],
     [
         'path' => '/signup',
@@ -70,4 +70,14 @@ return [
         'controller' => [CONTROLLER => UserController::class],
         'name' => 'createUser'
     ],
+    [
+        'path' => '/edit',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'renderUpdateForm'
+    ],
+    [
+        'path' => '/delete',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'deleteUser'
+    ]
 ];

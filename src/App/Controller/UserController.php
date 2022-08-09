@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Enum\LoginMessage;
 use Enum\User;
 
 use Exception\DuplicateUserException;
@@ -175,7 +176,7 @@ class UserController extends Controller
 				throw new InexistentUserException();
 			}
 			$this->userRepo->deleteUser($id);
-			echo "The user with the username \"{$username}\" has been deleted.";
+            $this->twigHandler::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::Deleted->value]);
 		} catch (UserException $e) {
 			echo $e->getMessage();
 		}

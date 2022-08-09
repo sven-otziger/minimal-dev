@@ -7,3 +7,15 @@ span.tabulator {
     width: 12px;
 }
 
+span.profile-tabulator {
+    display: inline-block;
+    width: 125px;
+}
+
+.temp-bg {
+    background-color: rgba(165,40,52,0.2)
+}
+
+.temp-height {
+    height: 500px;
+}
