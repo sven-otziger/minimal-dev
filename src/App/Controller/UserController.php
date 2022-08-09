@@ -11,6 +11,7 @@ use Exception\InvalidPasswordException;
 use Exception\PasswordException;
 use Exception\UserException;
 use Exception\ShortPasswordException;
+use Handler\PermissionHandler;
 use Repository\UserRepository;
 use Service\DatabaseService;
 use Twig\Error\Error;
@@ -18,8 +19,9 @@ use Twig\Error\Error;
 
 class UserController extends Controller
 {
-    private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
     private UserRepository $userRepo;
+    protected PermissionHandler $permissionHandler;
+    private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
     private string $UPDATE_TEMPLATE = 'update-user.html.twig';
 
     public function __construct(array $parameters, array $arguments)
@@ -40,13 +42,15 @@ class UserController extends Controller
 
     public function displayAllProfiles(): void
     {
+        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler::getId());
         $users = $this->userRepo->getAllUsersToDisplay();
-//        echo "<pre>";
-//        var_dump($users);
-//        echo "</pre>";
-//        die();
+
         $this->twigHandler::renderTwigTemplate('show-all-users.html.twig',
-            ['users' => $users, 'currentUser' => $this->sessionHandler::getUsername()]);
+            [
+                'users' => $users,
+                'currentUser' => $this->sessionHandler::getUsername(),
+                'permissions' => $permissions
+            ]);
     }
 
     public function renderSignupForm(string $messsage = null): void

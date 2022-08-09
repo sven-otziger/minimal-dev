@@ -17,7 +17,7 @@ class HomeController extends Controller
 
     public function home():void
     {
-        $id = $_SESSION['id'];
+        $id = SessionHandler::getId();
         $username = SessionHandler::getUsername();
         $permissions = $this->permissionHandler->getPermissions($id);
 

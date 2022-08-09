@@ -15,36 +15,39 @@
     <div class="row mt-5 temp-height">
         <div class="col p-5 temp-bg">
             <p class="h4 mb-4">All Profiles</p>
+            {% if permissions.r_other_users %}
 
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Username</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Street</th>
-                    <th scope="col">House Number</th>
-                    <th scope="col">ZIP Code</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Age</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for user in users %}
+                <table class="table table-striped">
+                    <thead>
                     <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.description }}</td>
-                        <td>{{ user.street }}</td>
-                        <td>{{ user.house_number }}</td>
-                        <td>{{ user.zip_code }}</td>
-                        <td>{{ user.city }}</td>
-                        <td>{{ user.age }}</td>
+                        <th scope="col">Username</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Street</th>
+                        <th scope="col">House Number</th>
+                        <th scope="col">ZIP Code</th>
+                        <th scope="col">City</th>
+                        <th scope="col">Age</th>
                     </tr>
-                {% endfor %}
-                </tbody>
+                    </thead>
 
-            </table>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.description }}</td>
+                            <td>{{ user.street }}</td>
+                            <td>{{ user.house_number }}</td>
+                            <td>{{ user.zip_code }}</td>
+                            <td>{{ user.city }}</td>
+                            <td>{{ user.age }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
 
+                </table>
+            {% else %}
+                <p>Your account is not authorized to show the required data.</p>
+            {% endif %}
             <form action="/home" method="post" class="mt-2">
                 <input type="submit" value="Main Menu">
             </form>
