@@ -25,12 +25,18 @@
 
 <body>
 
-{{ include('_navbar.html.twig', {username: user.username }) }}
+{% if isForeignProfile %}
+    {{ include('_navbar.html.twig', {username: currentUser}) }}
+{% else %}
+    {{ include('_navbar.html.twig', {username: user.username}) }}
+{% endif %}
+
 
 <div class="container update-user">
     <div class="row mt-5 temp-height">
         <div class="col p-5 temp-bg">
-
+            {% if not isForeignUser or
+                ( isForeignProfile and permissions.r_other_users and permissions.u_other_users and permissions.d_other_users) %}
             <form action="/update" method="post" name="update-user">
                 <input type="hidden" value="{{ user.id }}" name="id">
 
@@ -65,14 +71,23 @@
                 <input type="submit" value="Update" name="submit" class="mt-2">
             </form>
 
-            <form action="/profile" method="post" name="cancel" class="mt-2">
-                <input type="submit" value="Cancel">
-            </form>
-
-            {% if message %}
-                <p class="mt-5"><i class="fa-solid fa-info"></i> {{ message }}</p>
+            {% if isForeignProfile %}
+                <form action="/profile/{{ user.id }}" method="post" name="cancel" class="mt-2">
+            {% else %}
+                <form action="/profile" method="post" name="cancel" class="mt-2">
             {% endif %}
+                    <input type="submit" value="Cancel">
+                </form>
 
+                {% if message %}
+                    <p class="mt-5"><i class="fa-solid fa-info"></i> {{ message }}</p>
+                {% endif %}
+            {% else %}
+                <p>Your account is not authorized to update other accounts' data.</p>
+                <form action="/profile/{{ user.id }}" method="post" class="mt-2">
+                    <input type="submit" value="Main Menu">
+                </form>
+            {% endif %}
         </div>
     </div>
 </div>

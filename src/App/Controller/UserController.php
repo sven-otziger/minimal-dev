@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use Enum\LoginMessage;
+use Enum\Message;
 use Enum\User;
 
 use Exception\DuplicateUserException;
@@ -42,7 +42,7 @@ class UserController extends Controller
             ]);
     }
 
-    public function displayAllProfiles(): void
+    public function displayAllProfiles(string $message = null): void
     {
         $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
         $users = $this->userRepo->getAllUsersToDisplay();
@@ -51,7 +51,8 @@ class UserController extends Controller
             [
                 'users' => $users,
                 'currentUser' => $this->sessionHandler->getUsername(),
-                'permissions' => $permissions
+                'permissions' => $permissions,
+                'message' => $message
             ]);
     }
 
@@ -119,14 +120,31 @@ class UserController extends Controller
 
     public function renderUpdateForm(array $payload): void
     {
-        $this->sessionHandler::handleSession();
-        $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload]);
+
+        $currentUser = $this->sessionHandler->getUsername();
+        $isForeignProfile = $this->sessionHandler->getId() !== intval($payload['id']);
+        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+
+        $data =
+            [
+                'user' => $payload,
+                'currentUser' => $currentUser,
+                'isForeignProfile' => $isForeignProfile,
+                'permissions' => $permissions
+            ];
+
+//        echo "<pre>";
+//        var_dump($data);
+//        echo "</pre>";
+//        die();
+
+        $this->twigHandler->renderTwigTemplate($this->UPDATE_TEMPLATE,
+            $data);
     }
 
     public function updateUser(array $payload): void
     {
-        $this->sessionHandler::handleSession();
-
+        $isForeignProfile = $this->sessionHandler->getId() !== intval($payload['id']);
         $id = $payload['id'];
 
         $userFromDb = $this->userRepo->getUserById($id);
@@ -164,7 +182,7 @@ class UserController extends Controller
             if ($userFromDb->zip_code !== $payload['zip_code']) {
                 $this->userRepo->updateAttributeById($id, User::zip, $payload['zip_code']);
             }
-            header('Location: profile');
+            $isForeignProfile ? header('Location: profile/' . $id): header('Location: profile');
         } catch
         (DuplicateUserException $e) {
             $payload['username'] = $userFromDb->username;
@@ -179,13 +197,18 @@ class UserController extends Controller
     public function deleteUser(array $payload): void
     {
         $id = $payload['id'];
+        $isForeignProfile = $this->sessionHandler->getId() !== intval($payload['id']);
 
         try {
             if (!$this->checkUserExistence($id)) {
                 throw new InexistentUserException();
             }
             $this->userRepo->deleteUser($id);
-            $this->twigHandler->renderTwigTemplate('login.html.twig', ['message' => LoginMessage::Deleted->value]);
+            if ($isForeignProfile) {
+                $this->displayAllProfiles(Message::DeletedForeign->value);
+            } else {
+                $this->twigHandler->renderTwigTemplate('login.html.twig', ['message' => Message::Deleted->value]);
+            }
         } catch (UserException $e) {
             echo $e->getMessage();
         }
