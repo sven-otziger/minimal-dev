@@ -32,7 +32,7 @@ class UserRepository
     public function getAllUsersToDisplay(): array
     {
         return DatabaseService::getInstance()->execute("
-            SELECT username, r.description, street, house_number, zip_code, city, age
+            SELECT user.id, username, r.description, street, house_number, zip_code, city, age
             FROM user
             INNER JOIN role r on user.role = r.id;", []);
     }

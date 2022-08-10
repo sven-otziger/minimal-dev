@@ -32,10 +32,14 @@ class UserController extends Controller
 
     public function displayProfile(): void
     {
-        $activeUser = $this->sessionHandler->getId();
-        $userData = $this->userRepo->getUserById($activeUser);
+        $activeUserId = $this->sessionHandler->getId();
+        $userData = $this->userRepo->getUserById($activeUserId);
 
-        $this->twigHandler->renderTwigTemplate('show-user.html.twig', ['user' => $userData, 'isForeignProfile' => false]);
+        $this->twigHandler->renderTwigTemplate('show-user.html.twig',
+            [
+                'user' => $userData,
+                'isForeignProfile' => false,
+            ]);
     }
 
     public function displayAllProfiles(): void
@@ -47,6 +51,21 @@ class UserController extends Controller
             [
                 'users' => $users,
                 'currentUser' => $this->sessionHandler->getUsername(),
+                'permissions' => $permissions
+            ]);
+    }
+
+    public function displayForeignProfile(int $id):void
+    {
+        $userData = $this->userRepo->getUserById($id);
+        $currentUser = $this->sessionHandler->getUsername();
+        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+
+        $this->twigHandler->renderTwigTemplate('show-user.html.twig',
+            [
+                'user' => $userData,
+                'currentUser' => $currentUser,
+                'isForeignProfile' => true,
                 'permissions' => $permissions
             ]);
     }
