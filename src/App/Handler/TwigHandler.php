@@ -8,7 +8,7 @@ use Twig\Loader\FilesystemLoader;
 
 class TwigHandler
 {
-    private static Environment $twig;
+    private Environment $twig;
     private static ?TwigHandler $twigHandler = null;
 
     public function __construct()
@@ -19,7 +19,7 @@ class TwigHandler
 //		$this->twig = new Environment($twigLoader, ['cache' => dirname(__DIR__, 3) . '/cache']);
 
 //		without cache
-        self::$twig = new Environment($twigLoader, ['cache' => false]);
+        $this->twig = new Environment($twigLoader, ['cache' => false]);
     }
 
     public static function getTwigHandler(): TwigHandler
@@ -30,15 +30,12 @@ class TwigHandler
         return self::$twigHandler;
     }
 
-    public static function renderTwigTemplate(string $template, array $payload): void
+    public function renderTwigTemplate(string $template, array $payload): void
     {
         try {
-            echo self::$twig->render($template, $payload);
+            echo $this->twig->render($template, $payload);
         }catch (Error $e){
             echo $e->getMessage();
         }
     }
 }
-
-// twig handler is now used in SessionHandler
-// controllers still use the twig instance if their parent class

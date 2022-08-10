@@ -32,23 +32,21 @@ class UserController extends Controller
 
     public function displayProfile(): void
     {
-        $this->sessionHandler::handleSession();
-
-        $activeUser = $this->sessionHandler::getId();
+        $activeUser = $this->sessionHandler->getId();
         $userData = $this->userRepo->getUserById($activeUser);
 
-        $this->twigHandler::renderTwigTemplate('show-user.html.twig', ['user' => $userData]);
+        $this->twigHandler->renderTwigTemplate('show-user.html.twig', ['user' => $userData, 'isForeignProfile' => false]);
     }
 
     public function displayAllProfiles(): void
     {
-        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler::getId());
+        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
         $users = $this->userRepo->getAllUsersToDisplay();
 
-        $this->twigHandler::renderTwigTemplate('show-all-users.html.twig',
+        $this->twigHandler->renderTwigTemplate('show-all-users.html.twig',
             [
                 'users' => $users,
-                'currentUser' => $this->sessionHandler::getUsername(),
+                'currentUser' => $this->sessionHandler->getUsername(),
                 'permissions' => $permissions
             ]);
     }
@@ -56,7 +54,7 @@ class UserController extends Controller
     public function renderSignupForm(string $messsage = null): void
     {
         try {
-            $this->twigHandler::renderTwigTemplate('create-user-form.html.twig', ['message' => $messsage]);
+            $this->twigHandler->renderTwigTemplate('create-user-form.html.twig', ['message' => $messsage]);
         } catch (Error $e) {
             echo $e->getTraceAsString();
         }
@@ -92,7 +90,7 @@ class UserController extends Controller
 
             // display the new user:
             $lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
-            $this->sessionHandler::createSession($lastId, $username);
+            $this->sessionHandler->createSession($lastId, $username);
             header('Location: home');
 
         } catch (UserException|PasswordException $e) {
@@ -151,11 +149,11 @@ class UserController extends Controller
         } catch
         (DuplicateUserException $e) {
             $payload['username'] = $userFromDb->username;
-            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
+            $this->twigHandler->renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
 
         } catch (PasswordException $e) {
             $payload['password'] = $userFromDb->password;
-            $this->twigHandler::renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
+            $this->twigHandler->renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
         }
     }
 
@@ -168,7 +166,7 @@ class UserController extends Controller
                 throw new InexistentUserException();
             }
             $this->userRepo->deleteUser($id);
-            $this->twigHandler::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::Deleted->value]);
+            $this->twigHandler->renderTwigTemplate('login.html.twig', ['message' => LoginMessage::Deleted->value]);
         } catch (UserException $e) {
             echo $e->getMessage();
         }

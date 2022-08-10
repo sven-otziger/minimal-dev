@@ -46,7 +46,7 @@ class LoginController extends Controller
 
         if ($username === $dbUsername && password_verify($password, $dbPassword) && !$userIsDeleted) {
 
-            $this->sessionHandler::createSession($id, $username);
+            $this->sessionHandler->createSession($id, $username);
 
             header('Location: home');
         } else {
@@ -59,7 +59,7 @@ class LoginController extends Controller
 
     public function logout(): void
     {
-        $this->sessionHandler::destroySession();
+        $this->sessionHandler->destroySession();
         $this->renderLoginForm(LoginMessage::Logout);
     }
 }
