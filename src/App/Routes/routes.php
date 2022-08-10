@@ -61,6 +61,11 @@ return [
         'name' => 'displayProfile'
     ],
     [
+        'path' => '/profile/{id}',
+        'controller' => [CONTROLLER => UserController::class],
+        'name' => 'displayForeignProfile'
+    ],
+    [
         'path' => '/overview',
         'controller' => [CONTROLLER => UserController::class],
         'name' => 'displayAllProfiles'
