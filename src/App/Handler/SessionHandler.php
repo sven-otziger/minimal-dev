@@ -34,11 +34,6 @@ class SessionHandler
         $_SESSION['id'] = $id;
         $_SESSION['timestamp'] = time();
         $_SESSION['username'] = $username;
-
-//        echo "<pre>";
-//        var_dump($_SESSION);
-//        echo "</pre>";
-//        die();
     }
 
     public function destroySession(): void
@@ -67,10 +62,6 @@ class SessionHandler
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
                 echo $e->getTraceAsString();
             }
-
-//            echo $this->twig->render('login.html.twig', ['message' => $loginMessage->value]);
-//            echo TwigHandler::getTwigHandler()::renderTwigTemplate('login.html.twig', ['message' => LoginMessage::NotLoggedIn->value]);
-//            header('Location: ../../login-form');
             exit();
         } else if ($this->isSessionExpired()) {
             $this->destroySession();
@@ -81,19 +72,32 @@ class SessionHandler
             }
             exit();
         } else {
-            $_SESSION['timestamp'] = time();
-            session_regenerate_id();
+            // logged in
+            $isDeleted = $this->userRepo->getUserById($this->getId())->deleted;
+            $userExists = $this->userRepo->getUsernameById($this->getId()) !== null;
+
+            if (!$userExists || $isDeleted) {
+                // special case: e.g. admin deletes user because of spam/attacks/...
+                $this->destroySession();
+                $this->twigHandler->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => LoginMessage::Discontinued->value]);
+                exit();
+            } else {
+                if (time() - $_SESSION['timestamp'] > 5) {
+                    session_regenerate_id();
+                    $_SESSION['timestamp'] = time();
+                }
+            }
         }
     }
 
     public function getId(): int|bool
     {
-        return $_SESSION['id'];
+        return $_SESSION['id'] ?? false;
     }
 
     public function getUsername(): string|bool
     {
-        return $_SESSION['username'];
+        return $_SESSION['username'] ?? false;
     }
 
 }

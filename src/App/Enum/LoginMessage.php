@@ -10,4 +10,5 @@ enum LoginMessage: string
     case NotLoggedIn = 'Please log in to visit this page.';
     case Inactivity = 'You have been logged out due to inactivity.';
     case Deleted = 'Your account has been successfully deleted.';
+    case Discontinued = 'Your account seems to be discontinued.';
 }
