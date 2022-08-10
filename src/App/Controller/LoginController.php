@@ -3,7 +3,7 @@
 namespace Controller;
 
 use Enum\RequiredAttribute;
-use Enum\LoginMessage;
+use Enum\Message;
 use Repository\LoginRepository;
 use Twig\Error\Error;
 
@@ -17,7 +17,7 @@ class LoginController extends Controller
         parent::__construct($parameters, $arguments);
     }
 
-    public function renderLoginForm(LoginMessage $loginMessage = null): void
+    public function renderLoginForm(Message $loginMessage = null): void
     {
         $loginMessage = $loginMessage?->value;
         try {
@@ -36,7 +36,7 @@ class LoginController extends Controller
 
 //        user does not exist
         if (is_null($id)) {
-            $this->renderLoginForm(LoginMessage::LoginFailed);
+            $this->renderLoginForm(Message::LoginFailed);
             return;
         }
 
@@ -51,7 +51,7 @@ class LoginController extends Controller
             header('Location: home');
         } else {
 //            password does not match username or user is "deleted"
-            $this->renderLoginForm(LoginMessage::LoginFailed);
+            $this->renderLoginForm(Message::LoginFailed);
         }
     }
 
@@ -60,6 +60,6 @@ class LoginController extends Controller
     public function logout(): void
     {
         $this->sessionHandler->destroySession();
-        $this->renderLoginForm(LoginMessage::Logout);
+        $this->renderLoginForm(Message::Logout);
     }
 }
