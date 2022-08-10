@@ -8,7 +8,7 @@ use Handler\SessionHandler;
 use Handler\PermissionHandler;
 use Twig\Loader\FilesystemLoader;
 
-class Controller
+abstract class Controller
 {
     protected TwigHandler $twigHandler;
     protected SessionHandler $sessionHandler;
@@ -20,7 +20,9 @@ class Controller
         $this->sessionHandler = SessionHandler::getSessionHandler();
         $this->permissionHandler = PermissionHandler::getPermissionHandler();
 
-        // function call
+        if (!$this instanceof LoginController){
+            $this->sessionHandler->handleSession();
+        }
         call_user_func_array(array($this, $parameters['_route']), $arguments);
     }
 }
