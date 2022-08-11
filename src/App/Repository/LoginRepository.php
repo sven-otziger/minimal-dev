@@ -6,11 +6,11 @@ namespace Repository;
 use Enum\RequiredAttribute;
 use Service\DatabaseService;
 
-class LoginRepository
+class LoginRepository extends Repository
 {
     public function getUserIdByName(string $username): ?int
     {
-        $dataArray = DatabaseService::getInstance()->execute(
+        $dataArray = $this->dbService->execute(
             "SELECT id FROM user WHERE username = :username", ['username' => $username]);
 
         if (empty($dataArray)) {
@@ -22,7 +22,7 @@ class LoginRepository
 
     public function getPasswordById(int $id): ?string
     {
-        $dataArray = DatabaseService::getInstance()->execute(
+        $dataArray = $this->dbService->execute(
             "SELECT password FROM user WHERE id = :id", ['id' => $id]
         );
 
@@ -35,7 +35,7 @@ class LoginRepository
 
     public function getAttributeById(RequiredAttribute $requiredAttribute, int $id): ?string
     {
-        $result = DatabaseService::getInstance()->execute($requiredAttribute->value, ['id' => $id]);
+        $result = $this->dbService->execute($requiredAttribute->value, ['id' => $id]);
         if (empty($result)) {
             return null;
         } else {

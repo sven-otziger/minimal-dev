@@ -4,7 +4,7 @@ namespace Repository;
 
 use Service\DatabaseService;
 
-class PermissionRepository
+class PermissionRepository extends Repository
 {
     public function getPermissions(int $id): ?\stdClass
     {
@@ -13,7 +13,7 @@ class PermissionRepository
                     INNER JOIN role ON role.id = user.role
                     WHERE user.id = :id                    
                     ";
-        $dataArray = DatabaseService::getInstance()->execute($query, ['id' => $id]);
+        $dataArray = $this->dbService->execute($query, ['id' => $id]);
 
         if (empty($dataArray)) {
             return null;
