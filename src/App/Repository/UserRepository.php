@@ -45,18 +45,19 @@ class UserRepository extends Repository
         return count($data) === 1 ? $data[0] : null;
     }
 
-    public function createUser(string $username, string $password, int $age, string $street, string $number, string $zip, string $city): void
+    public function createUser(string $username, string $password, int $age, string $street, string $number, string $zip, string $city, int $roleId): void
     {
-        $this->dbService->execute("INSERT INTO user (username, password, age, street, house_number, zip_code, city, deleted) 
-			VALUES (:username, :password, :age, :street, :house_number, :zip_code, :city, false)",
+        $this->dbService->execute("INSERT INTO user (username, password, age, street, house_number, zip_code, city, deleted, role) 
+			VALUES (:username, :password, :age, :street, :house_number, :zip_code, :city, false, :roleId)",
             [
-                "username" => $username,
-                "password" => $password,
-                "age" => $age,
-                "street" => $street,
-                "house_number" => $number,
-                "zip_code" => $zip,
-                "city" => $city
+                'username' => $username,
+                'password' => $password,
+                'age' => $age,
+                'street' => $street,
+                'house_number' => $number,
+                'zip_code' => $zip,
+                'city' => $city,
+                'roleId' => $roleId
             ]);
     }
 
@@ -78,6 +79,12 @@ class UserRepository extends Repository
 
     }
 
+    public function getRoles(): array
+    {
+        return $this->dbService->execute("SELECT id, description FROM role WHERE selectable_at_signup ORDER BY is_default_role DESC ;", []);
+    }
+
+//    not in main application
     public function findUserWhereUsernameLike(string $search): array
     {
         return $this->dbService->execute("SELECT * FROM user WHERE username LIKE :search", ["search" => '%' . $search . '%']);

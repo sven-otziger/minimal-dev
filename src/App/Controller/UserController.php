@@ -82,11 +82,10 @@ class UserController extends Controller
 
     public function renderSignupForm(string $messsage = null): void
     {
-        try {
-            $this->twigHandler->renderTwigTemplate('create-user-form.html.twig', ['message' => $messsage]);
-        } catch (Error $e) {
-            echo $e->getTraceAsString();
-        }
+        $roles = $this->userRepo->getRoles();
+
+        $this->twigHandler->renderTwigTemplate('create-user-form.html.twig',
+            ['message' => $messsage, 'roles' => $roles]);
     }
 
     public function createUser(array $payload): void
@@ -98,6 +97,7 @@ class UserController extends Controller
         $number = $payload['number'];
         $zip = $payload['zip'];
         $city = $payload['city'];
+        $roleId = $payload['role'];
 
         try {
             // check username
@@ -115,7 +115,7 @@ class UserController extends Controller
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
             // create user
-            $this->userRepo->createUser($username, $hashedPassword, $age, $street, $number, $zip, $city);
+            $this->userRepo->createUser($username, $hashedPassword, $age, $street, $number, $zip, $city, $roleId);
 
             // display the new user:
             $lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();

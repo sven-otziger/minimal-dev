@@ -45,7 +45,8 @@ span.profile-tabulator {
     width: 100px;
 }
 
-.create-user form.user-creation input[type="text"] {
+.create-user form.user-creation input[type="text"],
+.create-user form.user-creation input[type="password"] {
     width: 200px;
 }
 
