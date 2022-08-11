@@ -33,7 +33,7 @@
                     {% endif %}
                 {% endfor %}
 
-                {% if isForeignProfile and permissions.u_other_users %}
+                {% if isForeignProfile and permissions.u_other_users and not user.deleted %}
                     <form action="/edit" method="post" name="render-edit" class="mt-5">
                         <input type="submit" name="submit" value="Edit">
 
@@ -48,7 +48,7 @@
                     </form>
                 {% endif %}
 
-                {% if isForeignProfile and permissions.d_other_users %}
+                {% if isForeignProfile and permissions.d_other_users and not user.deleted %}
                     <form action='/delete' method="post" name="user-deletion" class="mt-2">
                         <input type="hidden" name="id" value="{{ user.id }}">
                         <input type="hidden" name="username" value="{{ user.username }}">
@@ -58,6 +58,9 @@
 
                 {% if isForeignProfile %}
                     <form action="/overview" method="post" class="mt-2">
+                        {% if user.deleted %}
+                            <input type="hidden" name="statusCb" id="cb-value" value="true">
+                        {% endif %}
                         <input type="submit" value="Back">
                     </form>
                 {% else %}

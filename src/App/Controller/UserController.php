@@ -42,21 +42,30 @@ class UserController extends Controller
             ]);
     }
 
-    public function displayAllProfiles(string $message = null): void
+    public function displayAllProfiles(string $message = null, $payload = null): void
     {
         $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
-        $users = $this->userRepo->getAllUsersToDisplay();
+        $showDisabledUsers = false;
+        if (isset($payload) && $payload['statusCb'] === 'true') {
+            $showDisabledUsers = true;
+        }
+        $users = $this->userRepo->getAllUsersToDisplay($showDisabledUsers);
 
-        $this->twigHandler->renderTwigTemplate('show-all-users.html.twig',
-            [
-                'users' => $users,
-                'currentUser' => $this->sessionHandler->getUsername(),
-                'permissions' => $permissions,
-                'message' => $message
-            ]);
+
+        $data = [
+            'users' => $users,
+            'currentUser' => $this->sessionHandler->getUsername(),
+            'permissions' => $permissions,
+            'message' => $message
+        ];
+        if (isset($payload)) {
+            $data['statusCb'] = $payload['statusCb'] === 'true';
+        }
+
+        $this->twigHandler->renderTwigTemplate('show-all-users.html.twig', $data);
     }
 
-    public function displayForeignProfile(int $id):void
+    public function displayForeignProfile(int $id): void
     {
         $userData = $this->userRepo->getUserById($id);
         $currentUser = $this->sessionHandler->getUsername();
@@ -182,7 +191,7 @@ class UserController extends Controller
             if ($userFromDb->zip_code !== $payload['zip_code']) {
                 $this->userRepo->updateAttributeById($id, User::zip, $payload['zip_code']);
             }
-            $isForeignProfile ? header('Location: profile/' . $id): header('Location: profile');
+            $isForeignProfile ? header('Location: profile/' . $id) : header('Location: profile');
         } catch
         (DuplicateUserException $e) {
             $payload['username'] = $userFromDb->username;

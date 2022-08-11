@@ -18,16 +18,45 @@
             <p>{{ message }}</p>
             {% if permissions.r_other_users %}
 
+                <form action="/overview" method="post" id="form-toggle-user">
+                    <input type="checkbox" id="toggle-deleted" onchange="sendStatus()" checked="checked">
+                    <label for="toggle-deleted">Show Disabled Accounts</label>
+                    <script>
+                        function sendStatus() {
+							const cb = document.getElementById('toggle-deleted')
+                            let cbStatus = cb.checked
+
+                            const cbPayload = document.getElementById('cb-value')
+                            cbPayload.value = cbStatus
+
+                            const form = document.getElementById('form-toggle-user')
+                            form.submit()
+                        }
+                    </script>
+                    <input type="hidden" name="statusCb" id="cb-value">
+                </form>
+                {% if statusCb %}
+                    <script>
+                        console.log('case grabs - true')
+                        const cb = document.getElementById('toggle-deleted').checked = true
+                    </script>
+                {% else %}
+                    <script>
+                        console.log('case grabs - false')
+                        const cb = document.getElementById('toggle-deleted').checked = false
+                    </script>
+                {% endif %}
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
                         <th scope="col">Username</th>
                         <th scope="col">Role</th>
-                        <th scope="col">Street</th>
-                        <th scope="col">House Number</th>
-                        <th scope="col">ZIP Code</th>
+{#                        <th scope="col">Street</th>#}
+{#                        <th scope="col">House Number</th>#}
+{#                        <th scope="col">ZIP Code</th>#}
                         <th scope="col">City</th>
                         <th scope="col">Age</th>
+{#                        <th scope="col">Deleted</th>#}
                     </tr>
                     </thead>
 
@@ -36,11 +65,12 @@
                             <tr>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.description }}</td>
-                                <td>{{ user.street }}</td>
-                                <td>{{ user.house_number }}</td>
-                                <td>{{ user.zip_code }}</td>
+{#                                <td>{{ user.street }}</td>#}
+{#                                <td>{{ user.house_number }}</td>#}
+{#                                <td>{{ user.zip_code }}</td>#}
                                 <td>{{ user.city }}</td>
                                 <td>{{ user.age }}</td>
+{#                                <td>{{ user.deleted }}</td>#}
                                 <td><a href="/profile/{{ user.id }}" class="text-reset"><i class="fa-solid fa-eye"></i></a></td>
 
                             </tr>
