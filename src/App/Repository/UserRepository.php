@@ -29,12 +29,13 @@ class UserRepository
         return DatabaseService::getInstance()->execute("SELECT * FROM user", []);
     }
 
-    public function getAllUsersToDisplay(): array
+    public function getAllUsersToDisplay(bool $showDisabledUsers): array
     {
         return DatabaseService::getInstance()->execute("
-            SELECT user.id, username, r.description, street, house_number, zip_code, city, age
+            SELECT user.id, username, r.description, city, age
             FROM user
-            INNER JOIN role r on user.role = r.id;", []);
+            INNER JOIN role r on user.role = r.id
+            WHERE deleted = :showDisabledUsers;", ['showDisabledUsers' => $showDisabledUsers]);
     }
 
     public function getUserById(int $id): ?\stdClass
