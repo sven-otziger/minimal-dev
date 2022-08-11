@@ -35,7 +35,8 @@ class UserRepository
             SELECT user.id, username, r.description, city, age
             FROM user
             INNER JOIN role r on user.role = r.id
-            WHERE deleted = :showDisabledUsers;", ['showDisabledUsers' => $showDisabledUsers]);
+            WHERE deleted = :showDisabledUsers
+            ORDER BY username;", ['showDisabledUsers' => $showDisabledUsers]);
     }
 
     public function getUserById(int $id): ?\stdClass
