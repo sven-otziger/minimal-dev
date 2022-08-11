@@ -1,95 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Registration</title>
     <meta charset="UTF-8">
-    <title>Create User Form</title>
-    <style>
-
-        html {
-            font-family: sans-serif;
-        }
-
-        body {
-            padding: 0;
-            margin: 5rem 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .background {
-            background-color: rgba(13, 110, 253, 0.25);
-            width: 60%;
-            line-height: 2rem;
-            padding: 2rem;
-        }
-
-        form.user-creation label {
-            display: inline-block;
-            width: 100px;
-        }
-
-        form.user-creation input[type="text"] {
-            width: 200px;
-        }
-
-        div.submit {
-            text-align: right;
-        }
-
-        .link-login-form {
-            font-size: .8rem;
-        }
-
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>{{ source('main.css') }}</style>
 </head>
+
 <body>
-<div class="background">
-    <form action="/createUser" method="post" class="user-creation">
 
-        <div>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username">
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="text" id="password" name="password">
-        </div>
-        <div>
-            <label for="age">Age</label>
-            <input type="text" id="age" name="age">
-        </div>
-        <div>
-            <label for="street">Street</label>
-            <input type="text" id="street" name="street">
-        </div>
-        <div>
-            <label for="number">Number</label>
-            <input type="text" id="number" name="number">
-        </div>
-        <div>
-            <label for="zip">ZIP</label>
-            <input type="text" id="zip" name="zip">
-        </div>
-        <div>
-            <label for="city">City</label>
-            <input type="text" id="city" name="city">
-        </div>
-        <div class="submit">
-            <input type="submit" value="Create User">
-        </div>
+{{ include('_navbar.html.twig', {username: currentUser}) }}
 
-    </form>
+<div class="container create-user">
+    <div class="row mt-5 temp-height">
+        <div class="col p-5 temp-bg">
 
-    <div>
-        <form action="/login" method="post" class="link-login-form">
-            <label for="link-login">Already having an account. Log in here:</label>
-            <input type="submit" id="link-login" value="Log in">
-        </form>
-    </div>
+            <form action="/createUser" method="post" class="user-creation">
 
-    <div>
-        <p>{{ message }}</p>
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="text" id="password" name="password">
+                </div>
+                <div>
+                    <label for="age">Age</label>
+                    <input type="text" id="age" name="age">
+                </div>
+                <div>
+                    <label for="street">Street</label>
+                    <input type="text" id="street" name="street">
+                </div>
+                <div>
+                    <label for="number">Number</label>
+                    <input type="text" id="number" name="number">
+                </div>
+                <div>
+                    <label for="zip">ZIP</label>
+                    <input type="text" id="zip" name="zip">
+                </div>
+                <div>
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city">
+                </div>
+                <div class="submit">
+                    <input type="submit" value="Create User">
+                </div>
+
+            </form>
+
+            <form action="/login" method="post" class="link-login-form">
+                <p class="d-inline-block">Already having an account. Log in here:</p>
+                <input type="submit" value="Log in">
+            </form>
+
+            <p>{{ message }}</p>
+
+        </div>
     </div>
 </div>
 

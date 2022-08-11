@@ -13,7 +13,7 @@ span.profile-tabulator {
 }
 
 .temp-bg {
-    background-color: rgba(165,40,52,0.2)
+    background-color: rgba(165, 40, 52, 0.2)
 }
 
 .temp-height {
@@ -37,4 +37,22 @@ span.profile-tabulator {
 
 .login form.signup-form {
     font-size: .9rem;
+}
+
+/*   ### Registration Form ###   */
+.create-user form.user-creation label {
+    display: inline-block;
+    width: 100px;
+}
+
+.create-user form.user-creation input[type="text"] {
+    width: 200px;
+}
+
+.create-user div.submit {
+    text-align: right;
+}
+
+.create-user .link-login-form {
+    font-size: .8rem;
 }
