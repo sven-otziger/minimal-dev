@@ -20,9 +20,15 @@ abstract class Controller
         $this->sessionHandler = SessionHandler::getSessionHandler();
         $this->permissionHandler = PermissionHandler::getPermissionHandler();
 
-        if (!$this instanceof LoginController){
+        $methodName = $parameters['_route'];
+        $exceptions = [
+            'renderSignupForm',
+            'createUser'
+        ];
+
+        if (!$this instanceof LoginController && !in_array($methodName, $exceptions)){
             $this->sessionHandler->handleSession();
         }
-        call_user_func_array(array($this, $parameters['_route']), $arguments);
+        call_user_func_array(array($this, $methodName), $arguments);
     }
 }
