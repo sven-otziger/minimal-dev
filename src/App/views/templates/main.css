@@ -57,3 +57,14 @@ span.wide-tabulator {
 .create-user .link-login-form {
     font-size: .8rem;
 }
+
+/*   ### Update Forms ###   */
+.update-form label {
+    display: inline-block;
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.update-form input[type='text'] {
+    width: 200px;
+}
