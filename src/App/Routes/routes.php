@@ -113,6 +113,11 @@ return [
         'name' => 'updateMovie'
     ],
     [
+        'path' => '/movie/delete',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'deleteMovie'
+    ],
+    [
         // keep route below other /movie/xy routes
         'path' => '/movie/{id}',
         'controller' => [CONTROLLER => MovieController::class],

@@ -14,42 +14,41 @@
 <div class="container update-form">
     <div class="row mt-5 temp-height">
         <div class="col p-5 temp-bg">
-            {% if permissions.r_show and permissions.u_show and permissions.d_show %}
-                <form action="/movie/update" method="post" name="update-movie">
-                    <input type="hidden" value="{{ movie.id }}" name="id">
+            {% if permissions.r_show and permissions.u_show %}
+            <form action="/movie/update" method="post" name="update-movie">
+                <input type="hidden" value="{{ movie.id }}" name="id">
 
-                    <label for="title">Title</label>
-                    <input type="text" value="{{ movie.title }}" id="title" name="title">
-                    <br>
+                <label for="title">Title</label>
+                <input type="text" value="{{ movie.title }}" id="title" name="title"><
+                <br>
 
-                    <label for="description" class="align-top">Description</label>
-                    <textarea name="description" id="description" cols="100" rows="8">{{ movie.description }}</textarea>
-                    <br>
+                <label for="description" class="align-top">Description</label>
+                <textarea name="description" id="description" cols="100" rows="8">{{ movie.description }}</textarea>
+                <br>
 
-                    <label for="age">Director</label>
-{#                    <input type="text" value="{{ user.age }}" id="age" name="age">#}
-                    <br>
+                <label for="age">Director</label>
+                {#                    <input type="text" value="{{ user.age }}" id="age" name="age"> #}
+                <br>
 
-                    <label for="street">Actor</label>
-{#                    <input type="text" value="{{ user.street }}" id="street" name="street">#}
-                    <br>
+                <label for="street">Actor</label>
+                {#                    <input type="text" value="{{ user.street }}" id="street" name="street"> #}
+                <br>
 
-                    <label for="length">Length in Minutes</label>
-                    <input type="text" value="{{ movie.length }}" id="length" name="length">
-                    <br>
+                <label for="length">Length in Minutes</label>
+                <input type="text" value="{{ movie.length }}" id="length" name="length">
+                <br>
 
-                    <label for="rating">Rating out of 5</label>
-                    <input type="text" value="{{ movie.rating }}" id="rating" name="rating">
-                    <br>
+                <label for="rating">Rating out of 5</label>
+                <input type="text" value="{{ movie.rating }}" id="rating" name="rating">
+                <br>
 
-                    <input type="submit" value="Update" name="submit" class="mt-2">
-                </form>
+                <input type="submit" value="Update" name="submit" class="mt-2">
+            </form>
 
 
-                <form action="/movie/{{ movie.id }}" method="post" name="cancel" class="mt-2">
-                    <input type="submit" value="Cancel">
-                </form>
-
+            <form action="/movie/{{ movie.id }}" method="post" name="cancel" class="mt-2">
+                <input type="submit" value="Cancel">
+            </form>
             {% else %}
                 <p>Your account is not authorized to update movies.</p>
                 <form action="/movie/{{ movie.id }}" method="post" class="mt-2">

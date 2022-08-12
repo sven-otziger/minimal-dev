@@ -83,6 +83,13 @@ class MovieController extends Controller
             $this->movieRepo->updateRating($rating, $id);
         }
 
-        header('Location: /movie/' . $id);
+        $this->showMovie($id);
+    }
+
+    public function deleteMovie(array $payload): void
+    {
+        $id = intval($payload['id']);
+        $this->movieRepo->deleteMovie($id);
+        $this->showAllMovies();
     }
 }

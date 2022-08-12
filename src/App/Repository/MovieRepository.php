@@ -48,5 +48,10 @@ WHERE movie.id = :id
         $this->dbService->execute("UPDATE movie SET rating = :rating WHERE id = :id", ['rating' => $rating, 'id' => $id]);
     }
 
+    public function deleteMovie(int $id)
+    {
+        $this->dbService->execute("DELETE FROM movie WHERE id = :id", ['id' => $id]);
+    }
+
 
 }
