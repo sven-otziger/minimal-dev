@@ -22,7 +22,7 @@ class UserController extends Controller
     private UserRepository $userRepo;
     protected PermissionHandler $permissionHandler;
     private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
-    private string $UPDATE_TEMPLATE = 'update-user.html.twig';
+    private string $UPDATE_TEMPLATE = 'user/update-user.html.twig';
 
     public function __construct(array $parameters, array $arguments)
     {
@@ -35,7 +35,7 @@ class UserController extends Controller
         $activeUserId = $this->sessionHandler->getId();
         $userData = $this->userRepo->getUserById($activeUserId);
 
-        $this->twigHandler->renderTwigTemplate('show-user.html.twig',
+        $this->twigHandler->renderTwigTemplate('user/show-user.html.twig',
             [
                 'user' => $userData,
                 'isForeignProfile' => false,
@@ -62,7 +62,7 @@ class UserController extends Controller
             $data['statusCb'] = $payload['statusCb'] === 'true';
         }
 
-        $this->twigHandler->renderTwigTemplate('show-all-users.html.twig', $data);
+        $this->twigHandler->renderTwigTemplate('user/show-all-users.html.twig', $data);
     }
 
     public function displayForeignProfile(int $id): void
@@ -71,7 +71,7 @@ class UserController extends Controller
         $currentUser = $this->sessionHandler->getUsername();
         $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
 
-        $this->twigHandler->renderTwigTemplate('show-user.html.twig',
+        $this->twigHandler->renderTwigTemplate('user/show-user.html.twig',
             [
                 'user' => $userData,
                 'currentUser' => $currentUser,
@@ -84,7 +84,7 @@ class UserController extends Controller
     {
         $roles = $this->userRepo->getRoles();
 
-        $this->twigHandler->renderTwigTemplate('create-user-form.html.twig',
+        $this->twigHandler->renderTwigTemplate('user/create-user-form.html.twig',
             ['message' => $messsage, 'roles' => $roles]);
     }
 

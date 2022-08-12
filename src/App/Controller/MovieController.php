@@ -23,7 +23,7 @@ class MovieController extends Controller
         $username = $this->sessionHandler->getUsername();
         $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
 
-        $this->twigHandler->renderTwigTemplate('show-movie.html.twig',
+        $this->twigHandler->renderTwigTemplate('movie/show-movie.html.twig',
             [
                 'movie' => $movie,
                 'username' => $username,
@@ -36,7 +36,7 @@ class MovieController extends Controller
         $movies = $this->movieRepo->getAllMovies();
         $username = $this->sessionHandler->getUsername();
 
-        $this->twigHandler->renderTwigTemplate('show-all-movies.html.twig',
+        $this->twigHandler->renderTwigTemplate('movie/show-all-movies.html.twig',
             [
                 'movies' => $movies,
                 'username' => $username

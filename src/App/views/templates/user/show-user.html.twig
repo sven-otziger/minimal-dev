@@ -9,9 +9,9 @@
 </head>
 <body>
 {% if isForeignProfile %}
-    {{ include('_navbar.html.twig', {username: currentUser}) }}
+    {{ include('partial_view/_navbar.html.twig', {username: currentUser}) }}
 {% else %}
-    {{ include('_navbar.html.twig', {username: user.username}) }}
+    {{ include('partial_view/_navbar.html.twig', {username: user.username}) }}
 {% endif %}
 
 <div class="container">
@@ -78,7 +78,7 @@
     </div>
 </div>
 
-{{ include('_footer.html.twig') }}
+{{ include('partial_view/_footer.html.twig') }}
 
 <script src="https://kit.fontawesome.com/a41dcf7e67.js" crossorigin="anonymous"></script>
 </div>
