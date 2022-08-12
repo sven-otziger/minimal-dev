@@ -31,7 +31,7 @@ class MovieController extends Controller
             ]);
     }
 
-    public function showAllMovies(): void
+    public function showAllMovies(array $payload = null): void
     {
         $movies = $this->movieRepo->getAllMovies();
         $username = $this->sessionHandler->getUsername();
