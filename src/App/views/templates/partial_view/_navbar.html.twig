@@ -1,8 +1,14 @@
 <!-- Image and text -->
 <nav class="navbar navbar-light bg-light">
+    {% if noLink %}
+    <a class="navbar-brand">
+
+    {% else %}
     <a class="navbar-brand" href="/home">
-        <i class="fa-solid fa-chess-knight"></i>
-        minimal-dev
+
+    {% endif %}
+    <i class="fa-solid fa-chess-knight"></i>
+    minimal-dev
     </a>
     <a href="/profile" class="nav-link text-reset">{{ username }}</a>
 </nav>

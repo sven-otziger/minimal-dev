@@ -10,7 +10,7 @@
 
 <body>
 
-{{ include('partial_view/_navbar.html.twig', {username: currentUser}) }}
+{{ include('partial_view/_navbar.html.twig', {username: currentUser, noLink: true}) }}
 
 <div class="container create-user">
     <div class="row mt-5 temp-height">
@@ -70,6 +70,10 @@
         </div>
     </div>
 </div>
+
+{{ include('partial_view/_footer.html.twig') }}
+
+<script src="https://kit.fontawesome.com/a41dcf7e67.js" crossorigin="anonymous"></script>
 
 </body>
 </html>
