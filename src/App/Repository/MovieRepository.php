@@ -27,4 +27,26 @@ WHERE movie.id = :id
         ";
         return $this->dbService->execute($query, []);
     }
+
+    public function updateTitle(string $title, int $id): void
+    {
+        $this->dbService->execute("UPDATE movie SET title = :title WHERE id = :id", ['title' => $title, 'id' => $id]);
+    }
+
+    public function updateDescription(string $description, int $id): void
+    {
+        $this->dbService->execute("UPDATE movie SET description = :description WHERE id = :id", ['description' => $description, 'id' => $id]);
+    }
+
+    public function updateLength(int $length, int $id): void
+    {
+        $this->dbService->execute("UPDATE movie SET length = :length WHERE id = :id", ['length' => $length, 'id' => $id]);
+    }
+
+    public function updateRating(string $rating, int $id): void
+    {
+        $this->dbService->execute("UPDATE movie SET rating = :rating WHERE id = :id", ['rating' => $rating, 'id' => $id]);
+    }
+
+
 }

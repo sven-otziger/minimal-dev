@@ -103,13 +103,20 @@ return [
         'name' => 'showAllMovies'
     ],
     [
-        'path' => '/movie/{id}',
-        'controller' => [CONTROLLER => MovieController::class],
-        'name' => 'showMovie'
-    ],
-    [
         'path' => '/movie/edit',
         'controller' => [CONTROLLER => MovieController::class],
         'name' => 'renderEditTemplate'
+    ],
+    [
+        'path' => '/movie/update',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'updateMovie'
+    ],
+    [
+        // keep route below other /movie/xy routes
+        'path' => '/movie/{id}',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'showMovie'
     ]
+
 ];

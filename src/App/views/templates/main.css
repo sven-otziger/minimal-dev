@@ -62,9 +62,17 @@ span.wide-tabulator {
 .update-form label {
     display: inline-block;
     width: 150px;
-    margin-bottom: 10px;
 }
 
 .update-form input[type='text'] {
     width: 200px;
+}
+
+.update-form #title {
+    width: 400px;
+}
+
+.update-form input,
+.update-form textarea {
+    margin-bottom: 10px;
 }
