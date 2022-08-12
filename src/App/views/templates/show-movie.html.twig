@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ movie.title|capitalize }}</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>{{ source('main.css') }}</style>
+</head>
+<body>
+{{ include('_navbar.html.twig', {username: username}) }}
+
+
+<div class="container">
+    <div class="row mt-5 temp-height">
+        <div class="col p-5 temp-bg">
+            <p class="h4 mb-4">{{ movie.title }}</p>
+            {% set array = {
+                ('Actor'): movie.actor,
+                ('Director'): movie.director,
+                ('Length'): movie.length,
+                ('Rating'): movie.rating
+            } %}
+            <p>{{ movie.description }}</p>
+            {% for key, value in array %}
+                {% if value != '' or value != 0 %}
+                    <p><span class="wide-tabulator">{{ key }}</span>{{ value }}</p>
+                {% endif %}
+            {% endfor %}
+
+            {% if permissions.u_show %}
+                <form action="/movie/edit" method="post" name="render-movie-edit" class="mt-5">
+                    <input type="hidden" name="id" value="{{ movie.id }}">
+                    <input type="submit" name="submit" value="Edit">
+                </form>
+            {% endif %}
+
+            {% if permissions.d_show %}
+                <form action='/movie/delete' method="post" name="movie-deletion" class="mt-2">
+                    <input type="hidden" name="id" value="{{ movie.id }}">
+                    <input type="submit" name="submit" value="Delete">
+                </form>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{{ include('_footer.html.twig') }}
+
+<script src="https://kit.fontawesome.com/a41dcf7e67.js" crossorigin="anonymous"></script>
+</div>
+
+</body>
+</html>

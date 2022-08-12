@@ -3,6 +3,7 @@
 use Controller\BlogController;
 use Controller\DemoController;
 use Controller\HomeController;
+use Controller\MovieController;
 use Controller\RetroController;
 use Controller\UserController;
 use Controller\WebsiteController;
@@ -94,5 +95,21 @@ return [
         'path' => '/delete',
         'controller' => [CONTROLLER => UserController::class],
         'name' => 'deleteUser'
+    ],
+    // movies
+    [
+        'path' => '/movies',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'showAllMovies'
+    ],
+    [
+        'path' => '/movie/{id}',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'showMovie'
+    ],
+    [
+        'path' => '/movie/edit',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'renderEditTemplate'
     ]
 ];
