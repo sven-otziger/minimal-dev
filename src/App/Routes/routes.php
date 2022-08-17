@@ -118,6 +118,16 @@ return [
         'name' => 'deleteMovie'
     ],
     [
+        'path' => '/movie/new',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'renderCreateTemplate'
+    ],
+    [
+        'path' => '/movie/create',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'createMovie'
+    ],
+    [
         // keep route below other /movie/xy routes
         'path' => '/movie/{id}',
         'controller' => [CONTROLLER => MovieController::class],

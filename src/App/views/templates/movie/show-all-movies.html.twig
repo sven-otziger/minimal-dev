@@ -37,7 +37,13 @@
                 {% endfor %}
                 </tbody>
             </table>
-
+            <form action="/movie/new" method="post" name="create-movie-form">
+                <input type="submit" name="submit" value="Create a new Movie">
+                <input type="hidden" name="origin" value="all-movies">
+            </form>
+            <form action="/home" method="post" name="home" class="mt-2">
+                <input type="submit" value="Main Menu">
+            </form>
         </div>
     </div>
 </div>

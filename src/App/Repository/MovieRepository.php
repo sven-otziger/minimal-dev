@@ -28,6 +28,22 @@ WHERE movie.id = :id
         return $this->dbService->execute($query, []);
     }
 
+    public function createMovie(string $title, string $description, int $directorId, int $actorId, int $length, float $rating): void
+    {
+        $query = "
+            INSERT INTO movie (title, description, director, main_actor, length, rating)
+            VALUES (:title, :description, :director, :main_actor, :length, :rating)";
+        $this->dbService->execute($query,
+        [
+            'title' => $title,
+            'description' => $description,
+            'director' => $directorId,
+            'main_actor' => $actorId,
+            'length' => $length,
+            'rating' => $rating
+        ]);
+    }
+
     public function updateTitle(string $title, int $id): void
     {
         $this->dbService->execute("UPDATE movie SET title = :title WHERE id = :id", ['title' => $title, 'id' => $id]);

@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Repository\MovieRepository;
+use Service\DatabaseService;
 
 class MovieController extends Controller
 {
@@ -41,6 +42,39 @@ class MovieController extends Controller
                 'movies' => $movies,
                 'username' => $username
             ]);
+    }
+
+    public function renderCreateTemplate(array $payload = null): void
+    {
+        $origin = 'home';
+        if (isset($payload['origin'])) {
+            $origin = $payload['origin'];
+        }
+        $username = $this->sessionHandler->getUsername();
+        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+
+        $this->twigHandler->renderTwigTemplate('movie/create-movie.html.twig',
+            [
+                'username' => $username,
+                'permissions' => $permissions,
+                'origin' => $origin
+            ]);
+
+    }
+
+    public function createMovie(array $payload): void
+    {
+        $title = $payload['title'];
+        $description = $payload['description'];
+        $length = $payload['length'];
+        $rating = $payload['rating'];
+
+        $actor = 1;
+        $director = 1;
+
+        $this->movieRepo->createMovie($title, $description, $director, $actor, $length, $rating);
+        $lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
+        $this->showMovie($lastId);
     }
 
     public function renderEditTemplate(array $payload): void

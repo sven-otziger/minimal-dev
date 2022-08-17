@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create Movie</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>{{ source('main.css') }}</style>
+</head>
+<body>
+
+{{ include('partial_view/_navbar.html.twig', {username: user.username}) }}
+
+<div class="container update-form">
+    <div class="row mt-5 temp-height">
+        <div class="col p-5 temp-bg">
+            {% if permissions.c_show %}
+                <form action="/movie/create" method="post" name="create-movie">
+
+                    <label for="title">Title</label>
+                    <input type="text" value="{{ movie.title }}" id="title" name="title">
+                    <br>
+
+                    <label for="description" class="align-top">Description</label>
+                    <textarea name="description" id="description" cols="100" rows="8">{{ movie.description }}</textarea>
+                    <br>
+
+                    <label for="age">Director</label>
+                    {#                    <input type="text" value="{{ user.age }}" id="age" name="age"> #}
+                    <br>
+
+                    <label for="street">Actor</label>
+                    {#                    <input type="text" value="{{ user.street }}" id="street" name="street"> #}
+                    <br>
+
+                    <label for="length">Length in Minutes</label>
+                    <input type="text" value="{{ movie.length }}" id="length" name="length">
+                    <br>
+
+                    <label for="rating">Rating out of 5</label>
+                    <input type="text" value="{{ movie.rating }}" id="rating" name="rating">
+                    <br>
+
+                    <input type="submit" value="Create" name="submit" class="mt-2">
+                </form>
+
+                {% if origin == 'home' %}
+                    <form action="/home" method="post" name="cancel" class="mt-2">
+                        <input type="submit" value="Cancel">
+                    </form>
+                {% else %}
+                    <form action="/movies" method="post" name="cancel" class="mt-2">
+                        <input type="submit" value="Cancel">
+                    </form>
+                {% endif %}
+
+            {% else %}
+                <p>Your account is not authorized to create movies.</p>
+                <form action="/home" method="post" class="mt-2">
+                    <input type="submit" value="Main Menu">
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{{ include('partial_view/_footer.html.twig') }}
+
+<script src="https://kit.fontawesome.com/a41dcf7e67.js" crossorigin="anonymous"></script>
+</body>
+</html>
