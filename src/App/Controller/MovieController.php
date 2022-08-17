@@ -53,11 +53,17 @@ class MovieController extends Controller
         $username = $this->sessionHandler->getUsername();
         $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
 
+        $directors = $this->movieRepo->getDirectors();
+        $actors = $this->movieRepo->getActors();
+
+
         $this->twigHandler->renderTwigTemplate('movie/create-movie.html.twig',
             [
                 'username' => $username,
                 'permissions' => $permissions,
-                'origin' => $origin
+                'origin' => $origin,
+                'directors' => $directors,
+                'actors' => $actors
             ]);
 
     }
@@ -68,9 +74,8 @@ class MovieController extends Controller
         $description = $payload['description'];
         $length = $payload['length'];
         $rating = $payload['rating'];
-
-        $actor = 1;
-        $director = 1;
+        $actor = $payload['actor'];
+        $director = $payload['director'];
 
         $this->movieRepo->createMovie($title, $description, $director, $actor, $length, $rating);
         $lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();

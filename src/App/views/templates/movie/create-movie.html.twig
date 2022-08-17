@@ -25,12 +25,20 @@
                     <textarea name="description" id="description" cols="100" rows="8">{{ movie.description }}</textarea>
                     <br>
 
-                    <label for="age">Director</label>
-                    {#                    <input type="text" value="{{ user.age }}" id="age" name="age"> #}
+                    <label for="director">Director</label>
+                    <select name="director" id="director">
+                        {% for director in directors %}
+                            <option value="{{ director.id }}">{{ director.name }}</option>
+                        {% endfor %}
+                    </select>
                     <br>
 
-                    <label for="street">Actor</label>
-                    {#                    <input type="text" value="{{ user.street }}" id="street" name="street"> #}
+                    <label for="actor">Actor</label>
+                    <select name="actor" id="actor">
+                        {% for actor in actors %}
+                            <option value="{{ actor.id }}">{{ actor.name }}</option>
+                        {% endfor %}
+                    </select>
                     <br>
 
                     <label for="length">Length in Minutes</label>

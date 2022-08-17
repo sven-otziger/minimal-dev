@@ -28,6 +28,16 @@ WHERE movie.id = :id
         return $this->dbService->execute($query, []);
     }
 
+    public function getDirectors(): ?array
+    {
+        return $this->dbService->execute("SELECT id, name FROM director", []);
+    }
+
+    public function getActors(): ?array
+    {
+        return $this->dbService->execute("SELECT id, name FROM actor", []);
+    }
+
     public function createMovie(string $title, string $description, int $directorId, int $actorId, int $length, float $rating): void
     {
         $query = "
