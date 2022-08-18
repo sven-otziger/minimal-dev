@@ -27,17 +27,17 @@
 
                     <label for="director">Director</label>
                     <select name="director" id="director">
-                        {% for director in directors %}
-                            <option value="{{ director.id }}">{{ director.name }}</option>
-                        {% endfor %}
+                        {#                        {% for director in directors %} #}
+                        {#                            <option value="{{ director.id }}">{{ director.name }}</option> #}
+                        {#                        {% endfor %} #}
                     </select>
                     <br>
 
                     <label for="actor">Actor</label>
                     <select name="actor" id="actor">
-                        {% for actor in actors %}
-                            <option value="{{ actor.id }}">{{ actor.name }}</option>
-                        {% endfor %}
+                        {#                        {% for actor in actors %} #}
+                        {#                            <option value="{{ actor.id }}">{{ actor.name }}</option> #}
+                        {#                        {% endfor %} #}
                     </select>
                     <br>
 
@@ -76,5 +76,31 @@
 {{ include('partial_view/_footer.html.twig') }}
 
 <script src="https://kit.fontawesome.com/a41dcf7e67.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script>
+	fetch('http://localhost:8099/getActors')
+		.then(res => res.json())
+		.then(data => {
+			for (let actor of data) {
+				let option = document.createElement('option')
+				option.value = actor.id
+				option.innerText = actor.name
+				$('#actor').append(option)
+			}
+		})
+
+	fetch('http://localhost:8099/getDirectors')
+		.then(res => res.json())
+		.then(data => {
+			for (let director of data) {
+				let option = document.createElement('option')
+				option.value = director.id
+				option.innerText = director.name
+				$('#director').append(option)
+			}
+		})
+</script>
 </body>
 </html>

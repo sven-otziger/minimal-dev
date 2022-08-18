@@ -132,6 +132,16 @@ return [
         'path' => '/movie/{id}',
         'controller' => [CONTROLLER => MovieController::class],
         'name' => 'showMovie'
+    ],
+    [
+        'path' => '/getActors',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'getActors'
+    ],
+    [
+        'path' => '/getDirectors',
+        'controller' => [CONTROLLER => MovieController::class],
+        'name' => 'getDirectors'
     ]
 
 ];

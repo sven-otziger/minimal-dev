@@ -131,4 +131,14 @@ class MovieController extends Controller
         $this->movieRepo->deleteMovie($id);
         $this->showAllMovies();
     }
+
+    public function getActors()
+    {
+        echo json_encode($this->movieRepo->getActors());
+    }
+
+    public function getDirectors()
+    {
+        echo json_encode($this->movieRepo->getDirectors());
+    }
 }
