@@ -39,7 +39,8 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
-        "symfony/var-dumper": "5.4.x-dev"
+        "symfony/var-dumper": "5.4.x-dev",
+        "phpunit/phpunit": "^9.5"
     },
     "scripts": {
         "doctrine": "vendor/bin/doctrine"
