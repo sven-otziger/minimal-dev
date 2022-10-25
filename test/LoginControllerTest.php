@@ -42,7 +42,7 @@ class LoginControllerTest extends TestCase
             'house_number' => '20',
             'zip_code' => '3600',
             'city' => 'Thun',
-            'roleId' => $adminRoleId,
+            'roleId' => $adminRoleId[0]->id,
         ];
         $this->userRepo->createUser($userData['username'],
             $userData['password'],
