@@ -43,6 +43,7 @@
         "phpunit/phpunit": "^9.5"
     },
     "scripts": {
-        "doctrine": "vendor/bin/doctrine"
+        "doctrine": "vendor/bin/doctrine",
+        "test": "vendor/bin/phpunit -c phpunit.xml --no-coverage --verbose"
     }
 }

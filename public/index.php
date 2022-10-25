@@ -54,4 +54,12 @@ $arguments = array_filter($parameters, function ($index) {
 	return ($index != '_controller' && $index != '_route');
 }, ARRAY_FILTER_USE_KEY);
 // creates controller depending on the request
+$a = [
+    '$parameters' => $parameters,
+    '$arguments' => $arguments,
+];
+//echo "<pre>";
+//var_dump($a);
+//echo "</pre>";
+//die();
 $controller = new $parameters['_controller']($parameters, $arguments);
