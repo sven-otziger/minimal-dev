@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         $loginMessage = $loginMessage?->value;
         try {
-            $this->twigHandler->renderTwigTemplate('login.html.twig', ['message' => $loginMessage]);
+            $this->twigService->renderTwigTemplate('login.html.twig', ['message' => $loginMessage]);
         } catch (Error $e) {
             echo $e->getTraceAsString();
         }
@@ -46,7 +46,7 @@ class LoginController extends Controller
 
         if ($username === $dbUsername && password_verify($password, $dbPassword) && !$userIsDeleted) {
 
-            $this->sessionHandler->createSession($id, $username);
+            $this->sessionService->createSession($id, $username);
 
             header('Location: home');
         } else {
@@ -59,7 +59,7 @@ class LoginController extends Controller
 
     public function logout(): void
     {
-        $this->sessionHandler->destroySession();
+        $this->sessionService->destroySession();
         $this->renderLoginForm(Message::Logout);
     }
 }

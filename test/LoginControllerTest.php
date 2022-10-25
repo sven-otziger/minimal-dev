@@ -9,7 +9,7 @@ use Service\DatabaseService;
 
 class LoginControllerTest extends TestCase
 {
-    private \Handler\SessionHandler $sessionHandler;
+    private \Handler\SessionService $sessionService;
     private LoginRepository $loginRepo;
     private UserRepository $userRepo;
     private DatabaseService $dbSerivce;
@@ -20,7 +20,7 @@ class LoginControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->sessionHandler = \Handler\SessionHandler::getSessionHandler();
+        $this->sessionService = \Handler\SessionService::getSessionService();
         $this->loginRepo = new LoginRepository();
         $this->userRepo = new UserRepository();
         $this->dbSerivce = DatabaseService::getInstance();
@@ -126,8 +126,8 @@ class LoginControllerTest extends TestCase
         );
         $this->userRepo->deleteUser($userId[0]);
 
-        if ($this->sessionHandler->isLoggedIn()) {
-            $this->sessionHandler->destroySession();
+        if ($this->sessionService->isLoggedIn()) {
+            $this->sessionService->destroySession();
         }
     }
 }

@@ -21,10 +21,10 @@ class MovieController extends Controller
         $movie->length .= ' min.';
         $movie->rating .= '/5';
 
-        $username = $this->sessionHandler->getUsername();
-        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+        $username = $this->sessionService->getUsername();
+        $permissions = $this->permissionService->getPermissions($this->sessionService->getId());
 
-        $this->twigHandler->renderTwigTemplate('movie/show-movie.html.twig',
+        $this->twigService->renderTwigTemplate('movie/show-movie.html.twig',
             [
                 'movie' => $movie,
                 'username' => $username,
@@ -35,9 +35,9 @@ class MovieController extends Controller
     public function showAllMovies(array $payload = null): void
     {
         $movies = $this->movieRepo->getAllMovies();
-        $username = $this->sessionHandler->getUsername();
+        $username = $this->sessionService->getUsername();
 
-        $this->twigHandler->renderTwigTemplate('movie/show-all-movies.html.twig',
+        $this->twigService->renderTwigTemplate('movie/show-all-movies.html.twig',
             [
                 'movies' => $movies,
                 'username' => $username
@@ -50,14 +50,14 @@ class MovieController extends Controller
         if (isset($payload['origin'])) {
             $origin = $payload['origin'];
         }
-        $username = $this->sessionHandler->getUsername();
-        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+        $username = $this->sessionService->getUsername();
+        $permissions = $this->permissionService->getPermissions($this->sessionService->getId());
 
         $directors = $this->movieRepo->getDirectors();
         $actors = $this->movieRepo->getActors();
 
 
-        $this->twigHandler->renderTwigTemplate('movie/create-movie.html.twig',
+        $this->twigService->renderTwigTemplate('movie/create-movie.html.twig',
             [
                 'username' => $username,
                 'permissions' => $permissions,
@@ -84,11 +84,11 @@ class MovieController extends Controller
 
     public function renderEditTemplate(array $payload): void
     {
-        $username = $this->sessionHandler->getUsername();
+        $username = $this->sessionService->getUsername();
         $movie = $this->movieRepo->getMovie($payload['id']);
-        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+        $permissions = $this->permissionService->getPermissions($this->sessionService->getId());
 
-        $this->twigHandler->renderTwigTemplate('movie/update-movie.html.twig',
+        $this->twigService->renderTwigTemplate('movie/update-movie.html.twig',
             [
                 'username' => $username,
                 'movie' => $movie,

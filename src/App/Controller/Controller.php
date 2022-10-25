@@ -2,23 +2,23 @@
 
 namespace Controller;
 
+use Service\TwigService;
+use Service\SessionService;
+use Service\PermissionService;
 use Twig\Environment;
-use Handler\TwigHandler;
-use Handler\SessionHandler;
-use Handler\PermissionHandler;
 use Twig\Loader\FilesystemLoader;
 
 abstract class Controller
 {
-    protected TwigHandler $twigHandler;
-    protected SessionHandler $sessionHandler;
-    protected PermissionHandler $permissionHandler;
+    protected TwigService $twigService;
+    protected SessionService $sessionService;
+    protected PermissionService $permissionService;
 
     public function __construct(array $parameters, array $arguments)
     {
-        $this->twigHandler = TwigHandler::getTwigHandler();
-        $this->sessionHandler = SessionHandler::getSessionHandler();
-        $this->permissionHandler = PermissionHandler::getPermissionHandler();
+        $this->twigService = TwigService::getTwigService();
+        $this->sessionService = SessionService::getSessionService();
+        $this->permissionService = PermissionService::getPermissionService();
 
         $methodName = $parameters['_route'];
         $exceptions = [
@@ -27,7 +27,7 @@ abstract class Controller
         ];
 
         if (!$this instanceof LoginController && !in_array($methodName, $exceptions)){
-            $this->sessionHandler->handleSession();
+            $this->sessionService->handleSession();
         }
         call_user_func_array(array($this, $methodName), $arguments);
     }

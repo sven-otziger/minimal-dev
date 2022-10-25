@@ -11,7 +11,7 @@ use Exception\InvalidPasswordException;
 use Exception\PasswordException;
 use Exception\UserException;
 use Exception\ShortPasswordException;
-use Handler\PermissionHandler;
+use Service\PermissionService;
 use Repository\UserRepository;
 use Service\DatabaseService;
 use Twig\Error\Error;
@@ -20,7 +20,7 @@ use Twig\Error\Error;
 class UserController extends Controller
 {
     private UserRepository $userRepo;
-    protected PermissionHandler $permissionHandler;
+    protected PermissionService $permissionService;
     private string $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?()&])/";
     private string $UPDATE_TEMPLATE = 'user/update-user.html.twig';
 
@@ -32,10 +32,10 @@ class UserController extends Controller
 
     public function displayProfile(): void
     {
-        $activeUserId = $this->sessionHandler->getId();
+        $activeUserId = $this->sessionService->getId();
         $userData = $this->userRepo->getUserById($activeUserId);
 
-        $this->twigHandler->renderTwigTemplate('user/show-user.html.twig',
+        $this->twigService->renderTwigTemplate('user/show-user.html.twig',
             [
                 'user' => $userData,
                 'isForeignProfile' => false,
@@ -44,7 +44,7 @@ class UserController extends Controller
 
     public function displayAllProfiles(string $message = null, $payload = null): void
     {
-        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+        $permissions = $this->permissionService->getPermissions($this->sessionService->getId());
         $showDisabledUsers = false;
         if (isset($payload) && $payload['statusCb'] === 'true') {
             $showDisabledUsers = true;
@@ -54,7 +54,7 @@ class UserController extends Controller
 
         $data = [
             'users' => $users,
-            'currentUser' => $this->sessionHandler->getUsername(),
+            'currentUser' => $this->sessionService->getUsername(),
             'permissions' => $permissions,
             'message' => $message
         ];
@@ -62,16 +62,16 @@ class UserController extends Controller
             $data['statusCb'] = $payload['statusCb'] === 'true';
         }
 
-        $this->twigHandler->renderTwigTemplate('user/show-all-users.html.twig', $data);
+        $this->twigService->renderTwigTemplate('user/show-all-users.html.twig', $data);
     }
 
     public function displayForeignProfile(int $id): void
     {
         $userData = $this->userRepo->getUserById($id);
-        $currentUser = $this->sessionHandler->getUsername();
-        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+        $currentUser = $this->sessionService->getUsername();
+        $permissions = $this->permissionService->getPermissions($this->sessionService->getId());
 
-        $this->twigHandler->renderTwigTemplate('user/show-user.html.twig',
+        $this->twigService->renderTwigTemplate('user/show-user.html.twig',
             [
                 'user' => $userData,
                 'currentUser' => $currentUser,
@@ -84,7 +84,7 @@ class UserController extends Controller
     {
         $roles = $this->userRepo->getRoles();
 
-        $this->twigHandler->renderTwigTemplate('user/create-user-form.html.twig',
+        $this->twigService->renderTwigTemplate('user/create-user-form.html.twig',
             ['message' => $messsage, 'roles' => $roles]);
     }
 
@@ -119,7 +119,7 @@ class UserController extends Controller
 
             // display the new user:
             $lastId = DatabaseService::getInstance()->getConnection()->lastInsertId();
-            $this->sessionHandler->createSession($lastId, $username);
+            $this->sessionService->createSession($lastId, $username);
             header('Location: home');
 
         } catch (UserException|PasswordException $e) {
@@ -130,9 +130,9 @@ class UserController extends Controller
     public function renderUpdateForm(array $payload): void
     {
 
-        $currentUser = $this->sessionHandler->getUsername();
-        $isForeignProfile = $this->sessionHandler->getId() !== intval($payload['id']);
-        $permissions = $this->permissionHandler->getPermissions($this->sessionHandler->getId());
+        $currentUser = $this->sessionService->getUsername();
+        $isForeignProfile = $this->sessionService->getId() !== intval($payload['id']);
+        $permissions = $this->permissionService->getPermissions($this->sessionService->getId());
 
         $data =
             [
@@ -147,13 +147,13 @@ class UserController extends Controller
 //        echo "</pre>";
 //        die();
 
-        $this->twigHandler->renderTwigTemplate($this->UPDATE_TEMPLATE,
+        $this->twigService->renderTwigTemplate($this->UPDATE_TEMPLATE,
             $data);
     }
 
     public function updateUser(array $payload): void
     {
-        $isForeignProfile = $this->sessionHandler->getId() !== intval($payload['id']);
+        $isForeignProfile = $this->sessionService->getId() !== intval($payload['id']);
         $id = $payload['id'];
 
         $userFromDb = $this->userRepo->getUserById($id);
@@ -195,18 +195,18 @@ class UserController extends Controller
         } catch
         (DuplicateUserException $e) {
             $payload['username'] = $userFromDb->username;
-            $this->twigHandler->renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
+            $this->twigService->renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
 
         } catch (PasswordException $e) {
             $payload['password'] = $userFromDb->password;
-            $this->twigHandler->renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
+            $this->twigService->renderTwigTemplate($this->UPDATE_TEMPLATE, ['user' => $payload, 'message' => $e->getMessage()]);
         }
     }
 
     public function deleteUser(array $payload): void
     {
         $id = $payload['id'];
-        $isForeignProfile = $this->sessionHandler->getId() !== intval($payload['id']);
+        $isForeignProfile = $this->sessionService->getId() !== intval($payload['id']);
 
         try {
             if (!$this->checkUserExistence($id)) {
@@ -216,7 +216,7 @@ class UserController extends Controller
             if ($isForeignProfile) {
                 $this->displayAllProfiles(Message::DeletedForeign->value);
             } else {
-                $this->twigHandler->renderTwigTemplate('login.html.twig', ['message' => Message::Deleted->value]);
+                $this->twigService->renderTwigTemplate('login.html.twig', ['message' => Message::Deleted->value]);
             }
         } catch (UserException $e) {
             echo $e->getMessage();

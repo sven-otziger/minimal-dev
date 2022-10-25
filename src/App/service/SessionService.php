@@ -1,32 +1,33 @@
 <?php
 
-namespace Handler;
+namespace Service;
 
 use Enum\Message;
 use Repository\UserRepository;
+use Service\TwigService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class SessionHandler
+class SessionService
 {
-    private static ?SessionHandler $sessionHandler = null;
-    private TwigHandler $twigHandler;
+    private static ?SessionService $sessionService = null;
+    private TwigService $twigService;
     private UserRepository $userRepo;
     private string $LOGIN_TEMPLATE = 'login.html.twig';
 
     public function __construct()
     {
-        $this->twigHandler = TwigHandler::getTwigHandler();
+        $this->twigService = TwigService::getTwigService();
         $this->userRepo = new UserRepository();
     }
 
-    public static function getSessionHandler(): SessionHandler
+    public static function getSessionService(): SessionService
     {
-        if (self::$sessionHandler === null) {
-            self::$sessionHandler = new SessionHandler();
+        if (self::$sessionService === null) {
+            self::$sessionService = new SessionService();
         }
-        return self::$sessionHandler;
+        return self::$sessionService;
     }
 
     public function createSession(int $id, string $username): void
@@ -58,7 +59,7 @@ class SessionHandler
     {
         if (!$this->isLoggedIn()) {
             try {
-                $this->twigHandler->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::NotLoggedIn->value]);
+                $this->twigService->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::NotLoggedIn->value]);
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
                 echo $e->getTraceAsString();
             }
@@ -66,7 +67,7 @@ class SessionHandler
         } else if ($this->isSessionExpired()) {
             $this->destroySession();
             try {
-                $this->twigHandler->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::Inactivity->value]);
+                $this->twigService->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::Inactivity->value]);
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
                 echo $e->getTraceAsString();
             }
@@ -79,7 +80,7 @@ class SessionHandler
             if (!$userExists || $isDeleted) {
                 // special case: e.g. admin deletes user because of spam/attacks/...
                 $this->destroySession();
-                $this->twigHandler->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::Discontinued->value]);
+                $this->twigService->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::Discontinued->value]);
                 exit();
             } else {
                 if (time() - $_SESSION['timestamp'] > 5) {

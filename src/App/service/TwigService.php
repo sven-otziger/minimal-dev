@@ -1,15 +1,15 @@
 <?php
 
-namespace Handler;
+namespace Service;
 
 use Twig\Environment;
 use Twig\Error\Error;
 use Twig\Loader\FilesystemLoader;
 
-class TwigHandler
+class TwigService
 {
     private Environment $twig;
-    private static ?TwigHandler $twigHandler = null;
+    private static ?TwigService $twigService = null;
 
     public function __construct()
     {
@@ -22,12 +22,12 @@ class TwigHandler
         $this->twig = new Environment($twigLoader, ['cache' => false]);
     }
 
-    public static function getTwigHandler(): TwigHandler
+    public static function getTwigService(): TwigService
     {
-        if (self::$twigHandler === null) {
-            self::$twigHandler = new TwigHandler();
+        if (self::$twigService === null) {
+            self::$twigService = new TwigService();
         }
-        return self::$twigHandler;
+        return self::$twigService;
     }
 
     public function renderTwigTemplate(string $template, array $payload): void

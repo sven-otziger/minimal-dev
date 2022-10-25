@@ -1,12 +1,12 @@
 <?php
 
-namespace Handler;
+namespace Service;
 
 use Repository\PermissionRepository;
 
-class PermissionHandler
+class PermissionService
 {
-    private static ?PermissionHandler $permissionHandler = null;
+    private static ?PermissionService $permissionService = null;
     private PermissionRepository $permissionRepo;
 
     private function __construct()
@@ -14,12 +14,12 @@ class PermissionHandler
         $this->permissionRepo = new PermissionRepository();
     }
 
-    public static function getPermissionHandler(): PermissionHandler
+    public static function getPermissionService(): PermissionService
     {
-        if (self::$permissionHandler === null) {
-            self::$permissionHandler = new PermissionHandler();
+        if (self::$permissionService === null) {
+            self::$permissionService = new PermissionService();
         }
-        return self::$permissionHandler;
+        return self::$permissionService;
     }
 
     public function getPermissions(int $userId): ?\stdClass

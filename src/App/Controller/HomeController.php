@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use Handler\SessionHandler;
+use Service\SessionService;
 use Repository\UserRepository;
 
 class HomeController extends Controller
@@ -14,14 +14,14 @@ class HomeController extends Controller
 
     public function home():void
     {
-        $id = $this->sessionHandler->getId();
-        $username = $this->sessionHandler->getUsername();
-        $permissions = $this->permissionHandler->getPermissions($id);
+        $id = $this->sessionService->getId();
+        $username = $this->sessionService->getUsername();
+        $permissions = $this->permissionService->getPermissions($id);
 
         $data = [
             'username' => $username,
             'permissions' => $permissions
         ];
-        $this->twigHandler->renderTwigTemplate('home.html.twig', $data);
+        $this->twigService->renderTwigTemplate('home.html.twig', $data);
     }
 }

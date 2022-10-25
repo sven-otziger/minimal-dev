@@ -15,7 +15,6 @@
             "Retro\\Serialization\\": "src/Retro/Serialization",
             "Entity\\": "src/App/Entity",
             "Repository\\": "src/App/Repository",
-            "Handler\\": "src/App/Handler",
             "Enum\\": "src/App/Enum",
             "Exception\\": "src/App/Exception"
         }
