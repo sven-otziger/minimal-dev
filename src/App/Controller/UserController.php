@@ -2,20 +2,17 @@
 
 namespace Controller;
 
-use Enum\Message;
 use Enum\User;
-
+use Enum\Account;
 use Exception\DuplicateUserException;
 use Exception\InexistentUserException;
 use Exception\InvalidPasswordException;
 use Exception\PasswordException;
 use Exception\UserException;
 use Exception\ShortPasswordException;
-use Service\PermissionService;
 use Repository\UserRepository;
+use Service\PermissionService;
 use Service\DatabaseService;
-use Twig\Error\Error;
-
 
 class UserController extends Controller
 {
@@ -214,9 +211,9 @@ class UserController extends Controller
             }
             $this->userRepo->deleteUser($id);
             if ($isForeignProfile) {
-                $this->displayAllProfiles(Message::DeletedForeign->value);
+                $this->displayAllProfiles(Account::DeletedForeign->value);
             } else {
-                $this->twigService->renderTwigTemplate('login.html.twig', ['message' => Message::Deleted->value]);
+                $this->twigService->renderTwigTemplate('login.html.twig', ['message' => Account::Deleted->value]);
             }
         } catch (UserException $e) {
             echo $e->getMessage();

@@ -2,11 +2,10 @@
 
 namespace Controller;
 
+use Enum\SessionStatus;
 use Service\TwigService;
 use Service\SessionService;
 use Service\PermissionService;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 abstract class Controller
 {
@@ -27,7 +26,18 @@ abstract class Controller
         ];
 
         if (!$this instanceof LoginController && !in_array($methodName, $exceptions)){
-            $this->sessionService->handleSession();
+            $sessionStatus = $this->sessionService->getSessionStatus();
+            switch ($sessionStatus) {
+                case SessionStatus::NotLoggedIn:
+                case SessionStatus::Expired:
+                case SessionStatus::Discontinued:
+                    $this->twigService->renderTwigTemplate(
+                        'login.html.twig', ['message' => $sessionStatus->value]
+                    );
+                    exit();
+                case SessionStatus::LoggedIn:
+                    break;
+            }
         }
         call_user_func_array(array($this, $methodName), $arguments);
     }

@@ -2,23 +2,16 @@
 
 namespace Service;
 
-use Enum\Message;
+use Enum\SessionStatus;
 use Repository\UserRepository;
-use Service\TwigService;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 class SessionService
 {
-    private static ?SessionService $sessionService = null;
-    private TwigService $twigService;
     private UserRepository $userRepo;
-    private string $LOGIN_TEMPLATE = 'login.html.twig';
+    private static ?SessionService $sessionService = null;
 
     public function __construct()
     {
-        $this->twigService = TwigService::getTwigService();
         $this->userRepo = new UserRepository();
     }
 
@@ -55,23 +48,13 @@ class SessionService
         return time() - $_SESSION['timestamp'] > 5 * 60; // 5min
     }
 
-    public function handleSession(): void
+    public function getSessionStatus(): SessionStatus
     {
         if (!$this->isLoggedIn()) {
-            try {
-                $this->twigService->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::NotLoggedIn->value]);
-            } catch (LoaderError|RuntimeError|SyntaxError $e) {
-                echo $e->getTraceAsString();
-            }
-            exit();
+            return SessionStatus::NotLoggedIn;
         } else if ($this->isSessionExpired()) {
             $this->destroySession();
-            try {
-                $this->twigService->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::Inactivity->value]);
-            } catch (LoaderError|RuntimeError|SyntaxError $e) {
-                echo $e->getTraceAsString();
-            }
-            exit();
+            return SessionStatus::Expired;
         } else {
             // logged in
             $isDeleted = $this->userRepo->getUserById($this->getId())->deleted;
@@ -80,13 +63,13 @@ class SessionService
             if (!$userExists || $isDeleted) {
                 // special case: e.g. admin deletes user because of spam/attacks/...
                 $this->destroySession();
-                $this->twigService->renderTwigTemplate($this->LOGIN_TEMPLATE, ['message' => Message::Discontinued->value]);
-                exit();
+                return SessionStatus::Discontinued;
             } else {
                 if (time() - $_SESSION['timestamp'] > 5) {
                     session_regenerate_id();
                     $_SESSION['timestamp'] = time();
                 }
+                return SessionStatus::LoggedIn;
             }
         }
     }
