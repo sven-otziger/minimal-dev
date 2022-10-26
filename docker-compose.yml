@@ -36,7 +36,7 @@ services:
       - mariadb
     user: 1000:1000
     ports:
-      - "9003:9003"
+      - "10003:9003"
     volumes:
       - .:/srv/app
     env_file: .env
